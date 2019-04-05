@@ -55,7 +55,7 @@ public class OwnerSignUpActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null) {
-                    Intent intent = new Intent(OwnerSignUpActivity.this, TestActivity.class);
+                    Intent intent = new Intent(OwnerSignUpActivity.this, MapsActivity.class);
                     startActivity(intent);
                     finish();
                 }
@@ -73,7 +73,7 @@ public class OwnerSignUpActivity extends AppCompatActivity {
         mLoginText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(OwnerSignUpActivity.this, TestActivity.class);
+                Intent intent = new Intent(OwnerSignUpActivity.this, MapsActivity.class);
                 startActivity(intent);
                 finish();
             }
