@@ -45,6 +45,7 @@ public class ShowProfileActivity extends AppCompatActivity {
 
 
         Bundle bundle = getIntent().getExtras();
+        assert bundle != null;
         userName = bundle.getString("username");
         fullName = bundle.getString("fullname");
 
@@ -68,30 +69,15 @@ public class ShowProfileActivity extends AppCompatActivity {
         profileName.setTypeface(mTfBold);
         profileName.setText(fullName);
 
-        DatabaseReference public_book_ref = FirebaseDatabase.getInstance().getReference().child("Books");
+        DatabaseReference private_book_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
+                child("username").child(userName).child("books");
 
-        public_book_ref.addListenerForSingleValueEvent(new ValueEventListener() {
+        private_book_ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Map<String, Object> all_public_books = (Map<String, Object>) dataSnapshot.getValue();
-                assert all_public_books != null;
-                collectBookData(all_public_books);
-
-                //List Adapter
-                bookListAdapter = new BookListAdapter(books, getApplicationContext());
-
-                bookListView.setAdapter(bookListAdapter);
-                //bookListView.setClickable(true);
-
-                bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int itemNumber, long l) {
-                        Object obj = bookListView.getAdapter().getItem(itemNumber);
-
-
-                    }
-                });
-
+                Map<String, Object> all_private_books = (Map<String, Object>) dataSnapshot.getValue();
+                assert all_private_books != null;
+                collectBookData(all_private_books, userName);
             }
 
             @Override
@@ -100,13 +86,45 @@ public class ShowProfileActivity extends AppCompatActivity {
             }
         });
 
+//        DatabaseReference public_book_ref = FirebaseDatabase.getInstance().getReference().child("Books");
+//
+//        public_book_ref.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                Map<String, Object> all_public_books = (Map<String, Object>) dataSnapshot.getValue();
+//                assert all_public_books != null;
+//                collectBookData(all_public_books);
+//
+//                //List Adapter
+//                bookListAdapter = new BookListAdapter(books, getApplicationContext());
+//
+//                bookListView.setAdapter(bookListAdapter);
+//                //bookListView.setClickable(true);
+//
+//                bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(AdapterView<?> adapterView, View view, int itemNumber, long l) {
+//                        Object obj = bookListView.getAdapter().getItem(itemNumber);
+//
+//
+//                    }
+//                });
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+
 
 
 
 
     }
 
-    private void collectBookData(Map<String, Object> users) {
+    private void collectBookData(Map<String, Object> users, String owner) {
 
 
         //iterate through each user, ignoring their UID
@@ -120,7 +138,8 @@ public class ShowProfileActivity extends AppCompatActivity {
             aBook.setName((String) singleBook.get("name"));
             aBook.setAvailability((String) singleBook.get("availability"));
             aBook.setCategory((String) singleBook.get("category"));
-            aBook.setOwner((String) singleBook.get("owner"));
+            aBook.setOwner(owner);
+            //aBook.setOwner((String) singleBook.get("owner"));
             aBook.setWriter((String) singleBook.get("writer"));
 
             //phoneNumbers.add((Long) singleUser.get("phone"));
