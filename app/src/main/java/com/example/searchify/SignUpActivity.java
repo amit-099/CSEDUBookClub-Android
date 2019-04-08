@@ -1,6 +1,5 @@
 package com.example.searchify;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +12,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,7 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class OwnerSignUpActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
 
@@ -39,12 +37,11 @@ public class OwnerSignUpActivity extends AppCompatActivity {
     private EditText mContactRegistrationOwner;
     private EditText mUsernameRegistrationOwner;
     private TextView mLoginText;
-    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_owner_sign_up);
+        setContentView(R.layout.activity_sign_up);
 
         //FirebaseApp.initializeApp(this);
 
@@ -55,7 +52,7 @@ public class OwnerSignUpActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null) {
-                    Intent intent = new Intent(OwnerSignUpActivity.this, MapsActivity.class);
+                    Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
                     startActivity(intent);
                     finish();
                 }
@@ -73,7 +70,7 @@ public class OwnerSignUpActivity extends AppCompatActivity {
         mLoginText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(OwnerSignUpActivity.this, MapsActivity.class);
+                Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -139,13 +136,12 @@ public class OwnerSignUpActivity extends AppCompatActivity {
                             mUsernameRegistrationOwner.setError("choose a different username");
                         } else {
                             mUsernameRegistrationOwner.setError(null);
-                            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(OwnerSignUpActivity.this, new OnCompleteListener<AuthResult>() {
+                            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (!task.isSuccessful()) {
-                                        progressDialog.dismiss();
                                         mEmailRegistrationOwner.setError("this email is already registered");
-                                        Toast.makeText(OwnerSignUpActivity.this, "sign up error", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(SignUpActivity.this, "sign up error", Toast.LENGTH_SHORT).show();
                                     } else {
                                         mEmailRegistrationOwner.setError(null);
                                         String user_id = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
@@ -173,8 +169,6 @@ public class OwnerSignUpActivity extends AppCompatActivity {
                                     }
                                 }
                             });
-                            progressDialog = ProgressDialog.show(OwnerSignUpActivity.this, "Please wait.",
-                                    "Logging in..!", true);
                         }
                     }
 
