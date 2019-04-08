@@ -78,6 +78,23 @@ public class ShowProfileActivity extends AppCompatActivity {
                 Map<String, Object> all_private_books = (Map<String, Object>) dataSnapshot.getValue();
                 assert all_private_books != null;
                 collectBookData(all_private_books, userName);
+
+
+                //List Adapter
+                bookListAdapter = new BookListAdapter(books, getApplicationContext());
+
+                bookListView.setAdapter(bookListAdapter);
+                //bookListView.setClickable(true);
+
+                bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int itemNumber, long l) {
+                        Object obj = bookListView.getAdapter().getItem(itemNumber);
+
+
+                    }
+                });
+
             }
 
             @Override

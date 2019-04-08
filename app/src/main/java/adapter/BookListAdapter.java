@@ -1,6 +1,7 @@
 package adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,8 +70,15 @@ public class BookListAdapter extends BaseAdapter {
             reqButton.setClickable(false);
             reqButton.setText("Not Available");
         }
+
+        reqButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //send a request to book owner
+            }
+        });
         //Book Image
-        bookImageView.setImageResource(R.drawable.man);
+        bookImageView.setImageResource(R.drawable.library );
         bookImageView.setVisibility(View.VISIBLE);
 
         //Book name
