@@ -1,7 +1,9 @@
 package fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.internal.NavigationMenu;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.searchify.AddBookActivity;
 import com.example.searchify.R;
 import com.example.searchify.UserObj;
 import com.google.firebase.database.DataSnapshot;
@@ -24,6 +27,8 @@ import java.util.List;
 import java.util.Map;
 
 import adapter.HomeRecyclerAdapter;
+import io.github.yavski.fabspeeddial.FabSpeedDial;
+import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter;
 
 public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
@@ -74,6 +79,47 @@ public class HomeFragment extends Fragment {
         //getUserData(user_ref);
 
 
+
+
+
+        //Fav Button
+        FabSpeedDial fabAddFood = (FabSpeedDial) view.findViewById(R.id.fab_add_food);
+        fabAddFood.setMenuListener(new SimpleMenuListenerAdapter() {
+            @Override
+            public boolean onPrepareMenu(NavigationMenu navigationMenu) {
+                return true;
+            }
+        });
+        fabAddFood.setMenuListener(new SimpleMenuListenerAdapter() {
+            @Override
+            public boolean onMenuItemSelected(MenuItem menuItem) {
+
+
+                switch (menuItem.getItemId()) {
+                    case R.id.action_addbook: {
+                        Intent intent = new Intent(getContext(), AddBookActivity.class);
+                        startActivity(intent);
+                        break;
+                    }
+//                    case R.id.action_lunch: {
+//                        myMealType = "Lunch";
+//                        Intent intent = new Intent(getContext(), AddFoodActivity.class);
+//                        intent.putExtra("meal_type", "Lunch");
+//                        startActivity(intent);
+//                        break;
+//                    }
+//                    case R.id.action_dinner: {
+//                        myMealType = "Dinner";
+//                        Intent intent = new Intent(getContext(), AddFoodActivity.class);
+//                        intent.putExtra("meal_type", "Dinner");
+//                        startActivity(intent);
+//                        break;
+//                    }
+                }
+                return false;
+            }
+
+        });
 
 
         return view;

@@ -1,18 +1,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_breakfast"
+        android:id="@+id/action_addbook"
         android:icon="@drawable/ic_calender"
-        android:title="breakfast"
+        android:title="Add Book"
         />
-    <item
-        android:id="@+id/action_lunch"
-        android:icon="@drawable/ic_home"
-        android:title="lunch"
-        />
-    <item
-        android:id="@+id/action_dinner"
-        android:icon="@drawable/ic_favorite"
-        android:title="dinner"
-        />
+
 </menu>

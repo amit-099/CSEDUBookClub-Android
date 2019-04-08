@@ -21,7 +21,6 @@
                 android:id="@+id/weight_card_view"
                 android:clickable="true"
                 android:focusable="true"
-                android:foreground="?selectableItemBackground"
                 card_view:cardCornerRadius="12dp"
                 card_view:cardElevation="3dp"
                 card_view:contentPadding="4dp"
@@ -56,5 +55,28 @@
 
 
         </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true">
+
+        <io.github.yavski.fabspeeddial.FabSpeedDial
+            android:id="@+id/fab_add_food"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="bottom|end"
+            app:miniFabTitleBackgroundTint="@color/colorButton"
+            app:miniFabBackgroundTint="@color/colorButton"
+            app:fabBackgroundTint="@color/colorButton"
+            app:fabGravity="bottom_end"
+            app:fabMenu="@menu/menu_fab" />
+
+    </LinearLayout>
+
+
 
 </RelativeLayout>

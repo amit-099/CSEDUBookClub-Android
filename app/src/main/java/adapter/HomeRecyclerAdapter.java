@@ -34,24 +34,16 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
         public int currentItem;
         public ImageView itemImage;
         public TextView itemName;
-        public TextView itemDetail;
-        public ProgressBar itemGoalBar;
-        public TextView itemDuration, itemStreak;
-        public TextView itemCompletion;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
             itemImage = itemView.findViewById(R.id.goal_image);
             itemName = itemView.findViewById(R.id.goal_name);
-            itemDetail = itemView.findViewById(R.id.goal_details);
-            itemGoalBar = itemView.findViewById(R.id.goal_progress_bar);
-            itemDuration = itemView.findViewById(R.id.goal_duration);
-            itemStreak = itemView.findViewById(R.id.goal_streak);
-            itemCompletion = itemView.findViewById(R.id.goal_completion);
+
 
             Typeface mTfRegular = Typeface.createFromAsset(itemView.getContext().getAssets(),"OpenSans-Regular.ttf");
             itemName.setTypeface(mTfRegular);
-            itemDetail.setTypeface(mTfRegular);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
@@ -78,16 +70,8 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         viewHolder.itemName.setText(goalName.get(i));
-        viewHolder.itemDetail.setText(goalDes.get(i));
         viewHolder.itemImage.setImageResource(goalImages.get(i));
-        viewHolder.itemGoalBar.setMax((int)goalDuration.get(i));
-        viewHolder.itemGoalBar.setProgress((int) goalStreak.get(i));
-        viewHolder.itemDuration.setText(goalDuration.get(i) + " " + goalStatus.get(i));
-        viewHolder.itemStreak.setText(goalStreak.get(i) + " " + goalStatus.get(i));
-        if(goalStreak.get(i) >= goalDuration.get(i)) {
-            viewHolder.itemCompletion.setText("Completed");
-            viewHolder.itemCompletion.setTextColor(R.color.colorPrimary);
-        }
+        
 
     }
 
