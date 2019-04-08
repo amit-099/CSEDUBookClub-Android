@@ -155,6 +155,7 @@ public class SignUpActivity extends AppCompatActivity {
                                         newPost.put("name", name);
                                         newPost.put("contact no", contact);
                                         newPost.put("image","true");
+                                        newPost.put("books", "none");
                                         current_user_db.setValue(newPost);
 
                                         final DatabaseReference current_user_db2 = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").child("UID").child(user_id);
@@ -165,6 +166,7 @@ public class SignUpActivity extends AppCompatActivity {
                                         newPost2.put("contact no", contact);
                                         newPost2.put("device_token", deviceToken);
                                         newPost2.put("image","true");
+                                        newPost.put("books", "none");
 
                                         current_user_db2.setValue(newPost2);
                                     }

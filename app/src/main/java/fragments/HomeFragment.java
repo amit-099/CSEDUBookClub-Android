@@ -40,7 +40,7 @@ public class HomeFragment extends Fragment {
     private TextView goalHeaderText;
 
 
-    private ArrayList<UserObj> new_user = new ArrayList<>();
+    private ArrayList<UserObj> new_user;
 
 
     public HomeFragment() {
@@ -52,6 +52,9 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        new_user = new ArrayList<>();
+        System.out.println("Entering homeeeeeeeeeeeeeeeeeeeeeeeee");
+
 //        recyclerView = view.findViewById(R.id.goal_recycler_view);
 //        layoutManager = new LinearLayoutManager(getContext());
 //        recyclerView.setLayoutManager(layoutManager);
@@ -60,7 +63,8 @@ public class HomeFragment extends Fragment {
 //        recyclerView.setAdapter(adapter);
 
 
-        DatabaseReference user_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").child("UID");
+        DatabaseReference user_ref = FirebaseDatabase.getInstance().getReference().child("Users").
+                child("Owners").child("UID");
 
         user_ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -68,6 +72,11 @@ public class HomeFragment extends Fragment {
                 Map<String, Object> all_user = (Map<String, Object>) dataSnapshot.getValue();
                 assert all_user != null;
                 collectUserData(all_user);
+
+                for(int i = 0; i < new_user.size(); i++) {
+                    System.out.println("iiiiii    " + new_user.get(i).getUser_name());
+                }
+                System.out.println(new_user.size());
             }
 
             @Override
@@ -75,9 +84,6 @@ public class HomeFragment extends Fragment {
 
             }
         });
-
-        //getUserData(user_ref);
-
 
 
 
@@ -143,9 +149,10 @@ public class HomeFragment extends Fragment {
 
     private void collectUserData(Map<String, Object> users) {
 
-        UserObj aUser = new UserObj();
+
         //iterate through each user, ignoring their UID
         for (Map.Entry<String, Object> entry : users.entrySet()){
+            UserObj aUser = new UserObj();
 
             //Get user map
             Map singleUser = (Map) entry.getValue();
@@ -157,9 +164,9 @@ public class HomeFragment extends Fragment {
             System.out.println("PPPPPPP      " + aUser.toString());
             new_user.add(aUser);
         }
-        System.out.println("qqqqqq   " + new_user.size());
+        //System.out.println("qqqqqq   " + new_user.size());
 
-        //System.out.println(phoneNumbers.toString());
+        System.out.println("rrrrr   " + new_user.toString());
     }
 
 }
