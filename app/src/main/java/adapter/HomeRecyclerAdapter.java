@@ -11,29 +11,23 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.searchify.R;
+import com.example.searchify.UserObj;
 
 import java.util.List;
 
 public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapter.ViewHolder> {
-    List<String> goalName, goalDes,goalStatus;
-    List<Integer> goalImages,goalDuration,goalStreak;
+    List<UserObj> userObjList;
 
 
-    public HomeRecyclerAdapter(List<String> goalName, List<String> goalDes, List<Integer> goalImages,
-                               List<Integer> goalDuration, List<Integer> goalStreak, List<String>goalStatus) {
-        this.goalName = goalName;
-        this.goalDes = goalDes;
-        this.goalImages = goalImages;
-        this.goalDuration = goalDuration;
-        this.goalStreak = goalStreak;
-        this.goalStatus = goalStatus;
+    public HomeRecyclerAdapter(List<UserObj>userObjList) {
+        this.userObjList = userObjList;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
-        public int currentItem;
         public ImageView itemImage;
         public TextView itemName;
+
 
 
         public ViewHolder(View itemView) {
@@ -69,14 +63,14 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
     @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        viewHolder.itemName.setText(goalName.get(i));
-        viewHolder.itemImage.setImageResource(goalImages.get(i));
+        viewHolder.itemName.setText(userObjList.get(i).getName());
+        viewHolder.itemImage.setImageResource(R.drawable.man);
         
 
     }
 
     @Override
     public int getItemCount() {
-        return goalName.size();
+        return userObjList.size();
     }
 }

@@ -1,20 +1,22 @@
 package fragments;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.internal.NavigationMenu;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.example.searchify.AddBookActivity;
 import com.example.searchify.R;
+import com.example.searchify.ShowProfileActivity;
 import com.example.searchify.UserObj;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import adapter.HomeRecyclerAdapter;
+import adapter.UserListAdapter;
 import io.github.yavski.fabspeeddial.FabSpeedDial;
 import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter;
 
@@ -35,10 +37,11 @@ public class HomeFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter adapter;
 
-    List<String> goalName, goalDes, goalStatus;
-    List<Integer> goalImages, goalDuration, goalStreak;
-    private TextView goalHeaderText;
 
+    private ListView userListView;
+    private UserListAdapter userListAdapter;
+    private List<UserObj> userObjList = new ArrayList<>();
+    private Typeface mTfRegular, mTfLight, mtfBold;
 
     private ArrayList<UserObj> new_user;
 
@@ -49,8 +52,10 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        new_user = new ArrayList<>();
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        userListView = view.findViewById(R.id.user_list_view);
 
         new_user = new ArrayList<>();
         System.out.println("Entering homeeeeeeeeeeeeeeeeeeeeeeeee");
@@ -59,8 +64,7 @@ public class HomeFragment extends Fragment {
 //        layoutManager = new LinearLayoutManager(getContext());
 //        recyclerView.setLayoutManager(layoutManager);
 
-//        adapter = new HomeRecyclerAdapter(goalName, goalDes, goalImages, goalDuration, goalStreak, goalStatus);
-//        recyclerView.setAdapter(adapter);
+
 
 
         DatabaseReference user_ref = FirebaseDatabase.getInstance().getReference().child("Users").
@@ -77,6 +81,34 @@ public class HomeFragment extends Fragment {
                     System.out.println("iiiiii    " + new_user.get(i).getUser_name());
                 }
                 System.out.println(new_user.size());
+                for (int i=0;i<new_user.size();i++)
+                {
+                    System.out.println("baaaaaag "+new_user.get(i).getName());
+                }
+//                adapter = new HomeRecyclerAdapter(new_user);
+//                recyclerView.setAdapter(adapter);
+
+
+                //List Adapter
+                userListAdapter = new UserListAdapter(new_user, getContext());
+
+                userListView.setAdapter(userListAdapter);
+                userListView.setClickable(true);
+
+                userListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int itemNumber, long l) {
+                        Object obj = userListView.getAdapter().getItem(itemNumber);
+                        final String userName = new_user.get(itemNumber).getUser_name();
+                        final String fullName = new_user.get(itemNumber).getName();
+                        Intent intent = new Intent(getContext(), ShowProfileActivity.class);
+                        intent.putExtra("username", userName);
+                        intent.putExtra("fullname", fullName);
+                        startActivity(intent);
+
+                    }
+                });
+
             }
 
             @Override
@@ -107,20 +139,7 @@ public class HomeFragment extends Fragment {
                         startActivity(intent);
                         break;
                     }
-//                    case R.id.action_lunch: {
-//                        myMealType = "Lunch";
-//                        Intent intent = new Intent(getContext(), AddFoodActivity.class);
-//                        intent.putExtra("meal_type", "Lunch");
-//                        startActivity(intent);
-//                        break;
-//                    }
-//                    case R.id.action_dinner: {
-//                        myMealType = "Dinner";
-//                        Intent intent = new Intent(getContext(), AddFoodActivity.class);
-//                        intent.putExtra("meal_type", "Dinner");
-//                        startActivity(intent);
-//                        break;
-//                    }
+
                 }
                 return false;
             }

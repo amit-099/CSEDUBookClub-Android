@@ -49,6 +49,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     implementation 'io.github.yavski:fab-speed-dial:1.0.6'
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
 
 }
 
