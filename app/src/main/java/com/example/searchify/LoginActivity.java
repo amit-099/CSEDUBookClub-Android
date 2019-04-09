@@ -28,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
-    private DatabaseReference mUserDatabase;
+    //private DatabaseReference mUserDatabase;
     private ProgressDialog progressDialog;
 
     @Override
@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
 
-        mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child("Drivers").child("UID");
+        //mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child("Drivers").child("UID");
         mEmail = findViewById(R.id.input_email);
         mPassword = findViewById(R.id.input_password);
 
@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                             mPassword.setError(null);
                             final String deviceToken = FirebaseInstanceId.getInstance().getToken();
                             final String current_user = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
-                            mUserDatabase.child(current_user).child("device_token").setValue(deviceToken);
+                            //mUserDatabase.child(current_user).child("device_token").setValue(deviceToken);
                         }
                     }
                 });

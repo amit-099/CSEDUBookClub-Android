@@ -88,6 +88,8 @@ public class AddBookActivity extends AppCompatActivity {
                     mAvailability.setError(null);
                 }
 
+
+
                 final DatabaseReference book_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
                         child("UID").child(user_uid).child("books").child(book_name);
 

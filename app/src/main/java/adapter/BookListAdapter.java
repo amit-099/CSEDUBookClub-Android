@@ -3,6 +3,7 @@ package adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,18 +15,27 @@ import android.widget.TextView;
 import com.example.searchify.BookObj;
 import com.example.searchify.R;
 import com.example.searchify.UserObj;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
+import java.util.Objects;
 
 public class BookListAdapter extends BaseAdapter {
     public List<BookObj> bookObjList;
     Context context;
+    private FirebaseAuth mAuth;
 
     public BookListAdapter(List<BookObj> bookObjList, Context
 
             context) {
         this.context = context;
-        this.bookObjList = bookObjList ;
+        this.bookObjList = bookObjList;
+
     }
 
     @Override
@@ -47,7 +57,7 @@ public class BookListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = null;
-        BookObj book = bookObjList.get(position);
+        final BookObj book = bookObjList.get(position);
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater)
                     context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -65,7 +75,7 @@ public class BookListAdapter extends BaseAdapter {
         TextView authorNameText = v.findViewById(R.id.author_name);
         Button reqButton = v.findViewById(R.id.req_book_btn);
 
-        if(book.getAvailability()=="no")
+        if(book.getAvailability().equals("no"))
         {
             reqButton.setClickable(false);
             reqButton.setText("Not Available");
@@ -75,10 +85,42 @@ public class BookListAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 //send a request to book owner
+                mAuth = FirebaseAuth.getInstance();
+                final String user_id = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+
+                DatabaseReference req_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
+                        child("UID").child(user_id).child("sentrequest").child(book.getName());
+                req_ref.child("name").setValue(book.getName());
+                req_ref.child("category").setValue(book.getCategory());
+                req_ref.child("writer").setValue(book.getWriter());
+                req_ref.child("avaiability").setValue(book.getAvailability());
+
+                DatabaseReference uid_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
+                        child("UID").child(user_id).child("username");
+
+                uid_ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        final String user_name = (String) dataSnapshot.getValue();
+                        assert user_name != null;
+                        final DatabaseReference user_name_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
+                                child("username").child(user_name).child("sentrequest").child(book.getName());
+
+                        user_name_ref.child("name").setValue(book.getName());
+                        user_name_ref.child("category").setValue(book.getCategory());
+                        user_name_ref.child("writer").setValue(book.getWriter());
+                        user_name_ref.child("avaiability").setValue(book.getAvailability());
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
             }
         });
         //Book Image
-        bookImageView.setImageResource(R.drawable.library );
+        bookImageView.setImageResource(R.drawable.logoo );
         bookImageView.setVisibility(View.VISIBLE);
 
         //Book name

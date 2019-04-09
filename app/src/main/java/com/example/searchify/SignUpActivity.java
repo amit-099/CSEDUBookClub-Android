@@ -166,7 +166,7 @@ public class SignUpActivity extends AppCompatActivity {
                                         newPost2.put("contact no", contact);
                                         newPost2.put("device_token", deviceToken);
                                         newPost2.put("image","true");
-                                        newPost.put("books", "none");
+                                        newPost2.put("books", "none");
 
                                         current_user_db2.setValue(newPost2);
                                     }
