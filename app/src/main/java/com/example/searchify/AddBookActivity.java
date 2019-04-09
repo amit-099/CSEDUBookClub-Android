@@ -90,13 +90,13 @@ public class AddBookActivity extends AppCompatActivity {
 
 
 
-                final DatabaseReference book_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
-                        child("UID").child(user_uid).child("books").child(book_name);
-
-                book_ref.child("name").setValue(book_name);
-                book_ref.child("writer").setValue(writer_name);
-                book_ref.child("category").setValue(category);
-                book_ref.child("availability").setValue(availability);
+//                final DatabaseReference book_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
+//                        child("UID").child(user_uid).child("books").child(book_name);
+//
+//                book_ref.child("name").setValue(book_name);
+//                book_ref.child("writer").setValue(writer_name);
+//                book_ref.child("category").setValue(category);
+//                book_ref.child("availability").setValue(availability);
 
                 final DatabaseReference uid_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
                         child("UID").child(user_uid).child("username");
@@ -106,8 +106,23 @@ public class AddBookActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         final String user_name = (String) dataSnapshot.getValue();
                         assert user_name != null;
+
+                        final String book_id = user_name + book_name;
+
+                        final DatabaseReference book_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
+                                child("UID").child(user_uid).child("books").child(book_id);
+
+                        book_ref.child("name").setValue(book_name);
+                        book_ref.child("writer").setValue(writer_name);
+                        book_ref.child("category").setValue(category);
+                        book_ref.child("availability").setValue(availability);
+
+
+
+
+
                         final DatabaseReference user_name_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
-                                child("username").child(user_name).child("books").child(book_name);
+                                child("username").child(user_name).child("books").child(book_id);
 
                         user_name_ref.child("name").setValue(book_name);
                         user_name_ref.child("writer").setValue(writer_name);
@@ -115,7 +130,7 @@ public class AddBookActivity extends AppCompatActivity {
                         user_name_ref.child("availability").setValue(availability);
 
                         final DatabaseReference publc_book_ref = FirebaseDatabase.getInstance().getReference().child("Books").
-                                child(book_name);
+                                child(book_id);
                         publc_book_ref.child("name").setValue(book_name);
                         publc_book_ref.child("writer").setValue(writer_name);
                         publc_book_ref.child("category").setValue(category);
