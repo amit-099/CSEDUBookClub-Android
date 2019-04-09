@@ -51,7 +51,7 @@
             android:drawableLeft="@drawable/ic_add_black_48dp_01"
             android:text="Request Book"
             android:textAlignment="textStart"
-            android:background="@color/colorPrimaryLight"
+            android:textColor="@color/colorPrimary"
 
             />
 
@@ -62,9 +62,9 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_add_black_48dp_01"
-            android:text="Read Book"
+            android:text="Read"
             android:textAlignment="textStart"
-            android:background="@color/divider"
+            android:textColor="@color/quantum_pink"
             />
 
     </LinearLayout>

@@ -31,7 +31,8 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/title_text_color"
                 android:textSize="16sp"
-                android:text="Book name"/>
+                android:text="Book name"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/author_name"
@@ -39,6 +40,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/title_text_color"
                 android:textSize="16sp"
+                android:textStyle="italic"
                 android:text="author name"/>
         </LinearLayout>
 
@@ -58,7 +60,7 @@
             android:drawableLeft="@drawable/ic_add_black_48dp_01"
             android:text="Allow"
             android:textAlignment="textStart"
-            android:background="@color/colorPrimary"
+            android:textColor="@color/colorPrimary"
 
             />
 
@@ -71,7 +73,7 @@
             android:drawableLeft="@drawable/ic_add_black_48dp_01"
             android:text="Reject"
             android:textAlignment="textStart"
-            android:background="@color/pink"
+            android:textColor="@color/pink"
             />
 
     </LinearLayout>
