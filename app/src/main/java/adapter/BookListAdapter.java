@@ -74,6 +74,7 @@ public class BookListAdapter extends BaseAdapter {
         TextView bookNameText = v.findViewById(R.id.book_name);
         TextView authorNameText = v.findViewById(R.id.author_name);
         Button reqButton = v.findViewById(R.id.req_book_btn);
+        Button readButton = v.findViewById(R.id.read_book_btn);
 
         if(book.getAvailability().equals("no"))
         {
@@ -119,6 +120,14 @@ public class BookListAdapter extends BaseAdapter {
                 });
             }
         });
+
+        readButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //current user e book read list e thakle unread banate hobe else read
+            }
+        });
+
         //Book Image
         bookImageView.setImageResource(R.drawable.logoo );
         bookImageView.setVisibility(View.VISIBLE);

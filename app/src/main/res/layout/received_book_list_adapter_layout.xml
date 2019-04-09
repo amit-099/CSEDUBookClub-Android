@@ -3,6 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    <TextView
+        android:id="@+id/req_sender_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/title_text_color"
+        android:textSize="16sp"
+        android:text="Sender Name"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,26 +21,26 @@
             android:layout_height="50dp"
             android:contentDescription="@string/app_name"/>
         <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:padding="10dp">
-    <TextView
-        android:id="@+id/book_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/title_text_color"
-        android:textSize="16sp"
-        android:text="Book name"/>
+            <TextView
+                android:id="@+id/book_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/title_text_color"
+                android:textSize="16sp"
+                android:text="Book name"/>
 
-    <TextView
-        android:id="@+id/author_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/title_text_color"
-        android:textSize="16sp"
-        android:text="author name"/>
-</LinearLayout>
+            <TextView
+                android:id="@+id/author_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/title_text_color"
+                android:textSize="16sp"
+                android:text="author name"/>
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -43,35 +50,35 @@
         android:orientation="horizontal"
         >
         <Button
-            android:id="@+id/req_book_btn"
+            android:id="@+id/allow_req_btn"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="0px"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_add_black_48dp_01"
-            android:text="Request Book"
+            android:text="Allow"
             android:textAlignment="textStart"
-            android:background="@color/colorPrimaryLight"
+            android:background="@color/colorPrimary"
 
             />
 
         <Button
-            android:id="@+id/read_book_btn"
+            android:id="@+id/reject_req_btn"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="0px"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_add_black_48dp_01"
-            android:text="Read Book"
+            android:text="Reject"
             android:textAlignment="textStart"
-            android:background="@color/divider"
+            android:background="@color/pink"
             />
 
     </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/divider" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/divider" />
 </LinearLayout>
 
