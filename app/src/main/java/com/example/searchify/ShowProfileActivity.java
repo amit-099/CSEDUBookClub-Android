@@ -70,7 +70,7 @@ public class ShowProfileActivity extends AppCompatActivity {
         profileName.setText(fullName);
 
         DatabaseReference private_book_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
-                child("username").child(userName).child("books");
+                child("username").child(userName);
 
         private_book_ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -152,6 +152,7 @@ public class ShowProfileActivity extends AppCompatActivity {
             Map singleBook = (Map) entry.getValue();
 
             //Get phone field and append to list
+            aBook.setBook_id((String) singleBook.get("bookid"));
             aBook.setName((String) singleBook.get("name"));
             aBook.setAvailability((String) singleBook.get("availability"));
             aBook.setCategory((String) singleBook.get("category"));

@@ -90,11 +90,12 @@ public class BookListAdapter extends BaseAdapter {
                 final String user_id = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
 
                 DatabaseReference req_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
-                        child("UID").child(user_id).child("sentrequest").child(book.getName());
+                        child("UID").child(user_id).child("sentrequest").child(book.getBook_id());
                 req_ref.child("name").setValue(book.getName());
                 req_ref.child("category").setValue(book.getCategory());
                 req_ref.child("writer").setValue(book.getWriter());
                 req_ref.child("avaiability").setValue(book.getAvailability());
+                req_ref.child("bookid").setValue(book.getBook_id());
 
                 DatabaseReference uid_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
                         child("UID").child(user_id).child("username");
@@ -105,12 +106,13 @@ public class BookListAdapter extends BaseAdapter {
                         final String user_name = (String) dataSnapshot.getValue();
                         assert user_name != null;
                         final DatabaseReference user_name_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
-                                child("username").child(user_name).child("sentrequest").child(book.getName());
+                                child("username").child(user_name).child("sentrequest").child(book.getBook_id());
 
                         user_name_ref.child("name").setValue(book.getName());
                         user_name_ref.child("category").setValue(book.getCategory());
                         user_name_ref.child("writer").setValue(book.getWriter());
                         user_name_ref.child("avaiability").setValue(book.getAvailability());
+                        user_name_ref.child("bookid").setValue(book.getBook_id());
                     }
 
                     @Override
@@ -129,7 +131,7 @@ public class BookListAdapter extends BaseAdapter {
         });
 
         //Book Image
-        bookImageView.setImageResource(R.drawable.logoo );
+        bookImageView.setImageResource(R.drawable.library);
         bookImageView.setVisibility(View.VISIBLE);
 
         //Book name

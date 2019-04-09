@@ -53,6 +53,27 @@ public class BookFragment extends Fragment {
         public_book_ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.hasChild("Books"))
+//                {
+//                    Map<String, Object> all_public_books = (Map<String, Object>) dataSnapshot.getValue();
+//                    assert all_public_books != null;
+//                    collectBookData(all_public_books);
+//
+//                    //List Adapter
+//                    bookListAdapter = new BookListAdapter(books, getContext());
+//
+//                    bookListView.setAdapter(bookListAdapter);
+//                    //bookListView.setClickable(true);
+//
+//                    bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                        @Override
+//                        public void onItemClick(AdapterView<?> adapterView, View view, int itemNumber, long l) {
+//                            Object obj = bookListView.getAdapter().getItem(itemNumber);
+//
+//                        }
+//                    });
+//                }
+
                 Map<String, Object> all_public_books = (Map<String, Object>) dataSnapshot.getValue();
                 assert all_public_books != null;
                 collectBookData(all_public_books);
@@ -67,15 +88,10 @@ public class BookFragment extends Fragment {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int itemNumber, long l) {
                         Object obj = bookListView.getAdapter().getItem(itemNumber);
-//                final String userName = new_user.get(itemNumber).getUser_name();
-//                final String fullName = new_user.get(itemNumber).getName();
-//                Intent intent = new Intent(getContext(), ShowProfileActivity.class);
-//                intent.putExtra("username", userName);
-//                intent.putExtra("fullname", fullName);
-//                startActivity(intent);
 
                     }
                 });
+
 
 //                for(int i = 0; i < books.size(); i++) {
 //                    System.out.println("iiiiii    " + books.get(i).getName());
@@ -119,6 +135,7 @@ public class BookFragment extends Fragment {
             Map singleBook = (Map) entry.getValue();
 
             //Get phone field and append to list
+            aBook.setBook_id((String) singleBook.get("bookid"));
             aBook.setName((String) singleBook.get("name"));
             aBook.setAvailability((String) singleBook.get("availability"));
             aBook.setCategory((String) singleBook.get("category"));

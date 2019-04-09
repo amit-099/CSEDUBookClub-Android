@@ -6,13 +6,15 @@ public class BookObj {
     private String owner;
     private String writer;
     private String availability;
+    private String book_id;
 
-    public BookObj(String name, String category, String owner, String writer, String availability) {
+    public BookObj(String name, String category, String owner, String writer, String availability, String book_id) {
         this.name = name;
         this.category = category;
         this.owner = owner;
         this.writer = writer;
         this.availability = availability;
+        this.book_id = book_id;
     }
 
     public BookObj() {}
@@ -55,6 +57,14 @@ public class BookObj {
 
     public void setAvailability(String availability) {
         this.availability = availability;
+    }
+
+    public String getBook_id() {
+        return book_id;
+    }
+
+    public void setBook_id(String book_id) {
+        this.book_id = book_id;
     }
 
     @Override
