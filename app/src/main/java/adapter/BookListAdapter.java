@@ -68,7 +68,7 @@ public class BookListAdapter extends BaseAdapter {
             v = convertView;
         }
 
-        Typeface mTfRegular = Typeface.createFromAsset(v.getContext().getAssets(),"OpenSans-Regular.ttf");
+        Typeface mTfRegular = Typeface.createFromAsset(v.getContext().getAssets(), "OpenSans-Regular.ttf");
 
         ImageView bookImageView = v.findViewById(R.id.book_img);
         TextView bookNameText = v.findViewById(R.id.book_name);
@@ -76,12 +76,13 @@ public class BookListAdapter extends BaseAdapter {
         Button reqButton = v.findViewById(R.id.req_book_btn);
         Button readButton = v.findViewById(R.id.read_book_btn);
 
-        if(book.getAvailability().equals("no"))
-        {
+        if (book.getAvailability().equals("no")) {
             reqButton.setClickable(false);
             reqButton.setText("Not Available");
+        } else if (book.getAvailability().equals("yes")) {
+            reqButton.setText("Request Book");
+            reqButton.setClickable(true);
         }
-
         reqButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,13 +90,13 @@ public class BookListAdapter extends BaseAdapter {
                 mAuth = FirebaseAuth.getInstance();
                 final String user_id = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
 
-                DatabaseReference req_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
-                        child("UID").child(user_id).child("sentrequest").child(book.getBook_id());
-                req_ref.child("name").setValue(book.getName());
-                req_ref.child("category").setValue(book.getCategory());
-                req_ref.child("writer").setValue(book.getWriter());
-                req_ref.child("avaiability").setValue(book.getAvailability());
-                req_ref.child("bookid").setValue(book.getBook_id());
+//                DatabaseReference req_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
+//                        child("UID").child(user_id).child("sentrequest").child(book.getBook_id());
+//                req_ref.child("name").setValue(book.getName());
+//                req_ref.child("category").setValue(book.getCategory());
+//                req_ref.child("writer").setValue(book.getWriter());
+//                req_ref.child("avaiability").setValue(book.getAvailability());
+//                req_ref.child("bookid").setValue(book.getBook_id());
 
                 DatabaseReference uid_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
                         child("UID").child(user_id).child("username");
@@ -105,6 +106,18 @@ public class BookListAdapter extends BaseAdapter {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         final String user_name = (String) dataSnapshot.getValue();
                         assert user_name != null;
+
+                        DatabaseReference req_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
+                                child("UID").child(user_id).child("sentrequest").child(book.getBook_id());
+                        req_ref.child("name").setValue(book.getName());
+                        req_ref.child("category").setValue(book.getCategory());
+                        req_ref.child("writer").setValue(book.getWriter());
+                        req_ref.child("avaiability").setValue(book.getAvailability());
+                        req_ref.child("bookid").setValue(book.getBook_id());
+                        req_ref.child("owner").setValue(book.getOwner());
+
+
+
                         final DatabaseReference user_name_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
                                 child("username").child(user_name).child("sentrequest").child(book.getBook_id());
 
@@ -113,6 +126,43 @@ public class BookListAdapter extends BaseAdapter {
                         user_name_ref.child("writer").setValue(book.getWriter());
                         user_name_ref.child("avaiability").setValue(book.getAvailability());
                         user_name_ref.child("bookid").setValue(book.getBook_id());
+                        user_name_ref.child("owner").setValue(book.getOwner());
+
+
+                        final DatabaseReference receive_req = FirebaseDatabase.getInstance().getReference().child("Users").
+                                child("Owners").child("username").child(book.getOwner()).child("receiverequest").child(book.getBook_id());
+                        receive_req.child("name").setValue(book.getName());
+                        receive_req.child("category").setValue(book.getCategory());
+                        receive_req.child("writer").setValue(book.getWriter());
+                        receive_req.child("avaiability").setValue(book.getAvailability());
+                        receive_req.child("bookid").setValue(book.getBook_id());
+                        receive_req.child("owner").setValue(book.getOwner());
+
+                        final DatabaseReference uid_ref = FirebaseDatabase.getInstance().getReference().child("Users").
+                                child("Owners").child("usename").child(book.getOwner()).child("UID");
+                        uid_ref.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                final String user_id = (String) dataSnapshot.getValue();
+                                assert user_id != null;
+                                final DatabaseReference user_id_ref = FirebaseDatabase.getInstance().getReference().child("Users").
+                                        child("Owners").child("UID").child(user_id).child("receiverequest").child(book.getBook_id());
+                                user_id_ref.child("name").setValue(book.getName());
+                                user_id_ref.child("category").setValue(book.getCategory());
+                                user_id_ref.child("writer").setValue(book.getWriter());
+                                user_id_ref.child("avaiability").setValue(book.getAvailability());
+                                user_id_ref.child("bookid").setValue(book.getBook_id());
+                                user_id_ref.child("owner").setValue(book.getOwner());
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
+
                     }
 
                     @Override
@@ -122,6 +172,7 @@ public class BookListAdapter extends BaseAdapter {
                 });
             }
         });
+
 
         readButton.setOnClickListener(new View.OnClickListener() {
             @Override

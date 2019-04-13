@@ -117,6 +117,7 @@ public class AddBookActivity extends AppCompatActivity {
                         book_ref.child("category").setValue(category);
                         book_ref.child("availability").setValue(availability);
                         book_ref.child("bookid").setValue(book_id);
+                        book_ref.child("owner").setValue(user_name);
 
 
 
@@ -130,6 +131,7 @@ public class AddBookActivity extends AppCompatActivity {
                         user_name_ref.child("category").setValue(category);
                         user_name_ref.child("availability").setValue(availability);
                         user_name_ref.child("bookid").setValue(book_id);
+                        user_name_ref.child("owner").setValue(user_name);
 
 
                         final DatabaseReference publc_book_ref = FirebaseDatabase.getInstance().getReference().child("Books").
