@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import com.example.searchify.BookObj;
 import com.example.searchify.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import adapter.ReceivedBookListAdapter;
 
@@ -32,6 +34,7 @@ public class AnalysisFragment extends Fragment {
     private ListView bookListView;
     private ReceivedBookListAdapter bookListAdapter;
     private List<String> new_user = new ArrayList<>();
+    private FirebaseAuth mAuth;
 
     public AnalysisFragment() {
 
@@ -45,42 +48,51 @@ public class AnalysisFragment extends Fragment {
 
         bookListView = view.findViewById(R.id.received_req_book_list_view);
 
+        mAuth = FirebaseAuth.getInstance();
 
-        System.out.println("Entering booooooooookssssssssss");
 
-        DatabaseReference public_book_ref = FirebaseDatabase.getInstance().getReference().child("Books");
+        System.out.println("Entering analysissssssssssssssssssss");
 
-        public_book_ref.addListenerForSingleValueEvent(new ValueEventListener() {
+        String user_id = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+
+        DatabaseReference receive_req_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
+                child("UID").child(user_id);
+
+        receive_req_ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Map<String, Object> all_public_books = (Map<String, Object>) dataSnapshot.getValue();
-                assert all_public_books != null;
-                collectBookData(all_public_books);
 
-                //List Adapter
-                bookListAdapter = new ReceivedBookListAdapter(books, getContext());
+                Map<String, Object> all_received_req = (Map<String, Object>) dataSnapshot.getValue();
+                assert all_received_req != null;
+                System.out.println("ALLLLLLLLLLLAAAAAAAAAAAAAALLLLLLLLLLLLLLLLLLAAAAAAAAAAAAAAAAAAAAALLLLLLLLLLLLL                ");
+                System.out.println(all_received_req);
 
-                bookListView.setAdapter(bookListAdapter);
-                //bookListView.setClickable(true);
+                if(all_received_req.containsKey("receiverequest")) {
+                    collectReqData(all_received_req);
+                    System.out.println("mmmmmmmmmmmmmmmmmmmmmmmmmm " + books);
 
-                bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int itemNumber, long l) {
-                        Object obj = bookListView.getAdapter().getItem(itemNumber);
-//                final String userName = new_user.get(itemNumber).getUser_name();
-//                final String fullName = new_user.get(itemNumber).getName();
-//                Intent intent = new Intent(getContext(), ShowProfileActivity.class);
-//                intent.putExtra("username", userName);
-//                intent.putExtra("fullname", fullName);
-//                startActivity(intent);
 
-                    }
-                });
+                    //List Adapter
+                    bookListAdapter = new ReceivedBookListAdapter(books, getContext());
 
-//                for(int i = 0; i < books.size(); i++) {
-//                    System.out.println("iiiiii    " + books.get(i).getName());
-//                }
-//                System.out.println(books.size());
+                    bookListView.setAdapter(bookListAdapter);
+                    //bookListView.setClickable(true);
+
+                    bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int itemNumber, long l) {
+                            Object obj = bookListView.getAdapter().getItem(itemNumber);
+//
+
+                        }
+                    });
+                }
+                else
+                {
+                    System.out.println("no booooooooooooks fffffffffound");
+                }
+
+//
             }
 
             @Override
@@ -108,15 +120,20 @@ public class AnalysisFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void collectBookData(Map<String, Object> users) {
+    private void collectReqData(Map<String, Object> users) {
 
+
+        Map<String, Object> req_book = (Map<String, Object>) users.get("receiverequest");
 
         //iterate through each user, ignoring their UID
-        for (Map.Entry<String, Object> entry : users.entrySet()){
+        for (Map.Entry<String, Object> entry : req_book.entrySet()){
             BookObj aBook = new BookObj();
 
             //Get user map
             Map singleBook = (Map) entry.getValue();
+
+            System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
+            System.out.println(singleBook);
 
             //Get phone field and append to list
             aBook.setName((String) singleBook.get("name"));
@@ -124,6 +141,7 @@ public class AnalysisFragment extends Fragment {
             aBook.setCategory((String) singleBook.get("category"));
             aBook.setOwner((String) singleBook.get("owner"));
             aBook.setWriter((String) singleBook.get("writer"));
+            aBook.setBook_id((String) singleBook.get("bookid"));
 
             //phoneNumbers.add((Long) singleUser.get("phone"));
             System.out.println("book      " + aBook.toString());

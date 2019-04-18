@@ -36,7 +36,6 @@ public class ShowProfileActivity extends AppCompatActivity {
     //List Adapter Init
     private ListView bookListView;
     private BookListAdapter bookListAdapter;
-    private List<String> new_user = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +50,6 @@ public class ShowProfileActivity extends AppCompatActivity {
 
         books = new ArrayList<>();
         bookListView = findViewById(R.id.book_list_view);
-        for(int i=0;i<3;i++)
-        {
-            new_user.add("blabla");
-        }
 
 
         coverImage = findViewById(R.id.header_cover_image);
@@ -70,14 +65,23 @@ public class ShowProfileActivity extends AppCompatActivity {
         profileName.setText(fullName);
 
         DatabaseReference private_book_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
-                child("username").child(userName);
+                child("username").child(userName).child("books");
 
         private_book_ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Map<String, Object> all_private_books = (Map<String, Object>) dataSnapshot.getValue();
-                assert all_private_books != null;
-                collectBookData(all_private_books, userName);
+                if (dataSnapshot.getValue() instanceof String){
+
+                }
+                else {
+                    Map<String, Object> all_private_books = (Map<String, Object>) dataSnapshot.getValue();
+                    assert all_private_books != null;
+
+                    System.out.println(all_private_books);
+
+                    collectBookData(all_private_books, userName);
+                }
+
 
 
                 //List Adapter

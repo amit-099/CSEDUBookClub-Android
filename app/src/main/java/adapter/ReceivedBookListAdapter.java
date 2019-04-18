@@ -26,6 +26,7 @@ public class ReceivedBookListAdapter extends BaseAdapter {
             context) {
         this.context = context;
         this.bookObjList = bookObjList ;
+
     }
 
     @Override
@@ -48,6 +49,7 @@ public class ReceivedBookListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = null;
         BookObj book = bookObjList.get(position);
+        //System.out.println();
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater)
                     context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -67,10 +69,15 @@ public class ReceivedBookListAdapter extends BaseAdapter {
         Button reqButton = v.findViewById(R.id.allow_req_btn);
         Button readButton = v.findViewById(R.id.reject_req_btn);
 
-        if(book.getAvailability()=="no")
-        {
+        System.out.println("Boooooooooooooooooooooooooooooooooooooooooooooookkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+        System.out.println(book);
+
+        if (book.getAvailability().equals("no")) {
             reqButton.setClickable(false);
             reqButton.setText("Not Available");
+        } else if (book.getAvailability().equals("yes")) {
+            reqButton.setText("Request Book");
+            reqButton.setClickable(true);
         }
 
         reqButton.setOnClickListener(new View.OnClickListener() {

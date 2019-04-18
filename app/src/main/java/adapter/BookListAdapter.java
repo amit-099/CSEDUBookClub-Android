@@ -112,7 +112,7 @@ public class BookListAdapter extends BaseAdapter {
                         req_ref.child("name").setValue(book.getName());
                         req_ref.child("category").setValue(book.getCategory());
                         req_ref.child("writer").setValue(book.getWriter());
-                        req_ref.child("avaiability").setValue(book.getAvailability());
+                        req_ref.child("availability").setValue(book.getAvailability());
                         req_ref.child("bookid").setValue(book.getBook_id());
                         req_ref.child("owner").setValue(book.getOwner());
 
@@ -124,7 +124,7 @@ public class BookListAdapter extends BaseAdapter {
                         user_name_ref.child("name").setValue(book.getName());
                         user_name_ref.child("category").setValue(book.getCategory());
                         user_name_ref.child("writer").setValue(book.getWriter());
-                        user_name_ref.child("avaiability").setValue(book.getAvailability());
+                        user_name_ref.child("availability").setValue(book.getAvailability());
                         user_name_ref.child("bookid").setValue(book.getBook_id());
                         user_name_ref.child("owner").setValue(book.getOwner());
 
@@ -134,23 +134,26 @@ public class BookListAdapter extends BaseAdapter {
                         receive_req.child("name").setValue(book.getName());
                         receive_req.child("category").setValue(book.getCategory());
                         receive_req.child("writer").setValue(book.getWriter());
-                        receive_req.child("avaiability").setValue(book.getAvailability());
+                        receive_req.child("availability").setValue(book.getAvailability());
                         receive_req.child("bookid").setValue(book.getBook_id());
                         receive_req.child("owner").setValue(book.getOwner());
 
+
                         final DatabaseReference uid_ref = FirebaseDatabase.getInstance().getReference().child("Users").
-                                child("Owners").child("usename").child(book.getOwner()).child("UID");
+                                child("Owners").child("username").child(book.getOwner()).child("UID");
                         uid_ref.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 final String user_id = (String) dataSnapshot.getValue();
                                 assert user_id != null;
+
+
                                 final DatabaseReference user_id_ref = FirebaseDatabase.getInstance().getReference().child("Users").
                                         child("Owners").child("UID").child(user_id).child("receiverequest").child(book.getBook_id());
                                 user_id_ref.child("name").setValue(book.getName());
                                 user_id_ref.child("category").setValue(book.getCategory());
                                 user_id_ref.child("writer").setValue(book.getWriter());
-                                user_id_ref.child("avaiability").setValue(book.getAvailability());
+                                user_id_ref.child("availability").setValue(book.getAvailability());
                                 user_id_ref.child("bookid").setValue(book.getBook_id());
                                 user_id_ref.child("owner").setValue(book.getOwner());
 

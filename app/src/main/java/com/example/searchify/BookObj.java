@@ -75,6 +75,7 @@ public class BookObj {
                 ", owner='" + owner + '\'' +
                 ", writer='" + writer + '\'' +
                 ", availability='" + availability + '\'' +
+                ", book_id='" + book_id + '\'' +
                 '}';
     }
 }

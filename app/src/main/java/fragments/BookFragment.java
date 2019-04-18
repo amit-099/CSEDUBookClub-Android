@@ -53,26 +53,6 @@ public class BookFragment extends Fragment {
         public_book_ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                if (dataSnapshot.hasChild("Books"))
-//                {
-//                    Map<String, Object> all_public_books = (Map<String, Object>) dataSnapshot.getValue();
-//                    assert all_public_books != null;
-//                    collectBookData(all_public_books);
-//
-//                    //List Adapter
-//                    bookListAdapter = new BookListAdapter(books, getContext());
-//
-//                    bookListView.setAdapter(bookListAdapter);
-//                    //bookListView.setClickable(true);
-//
-//                    bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                        @Override
-//                        public void onItemClick(AdapterView<?> adapterView, View view, int itemNumber, long l) {
-//                            Object obj = bookListView.getAdapter().getItem(itemNumber);
-//
-//                        }
-//                    });
-//                }
 
                 Map<String, Object> all_public_books = (Map<String, Object>) dataSnapshot.getValue();
                 assert all_public_books != null;
@@ -93,10 +73,6 @@ public class BookFragment extends Fragment {
                 });
 
 
-//                for(int i = 0; i < books.size(); i++) {
-//                    System.out.println("iiiiii    " + books.get(i).getName());
-//                }
-//                System.out.println(books.size());
             }
 
             @Override
