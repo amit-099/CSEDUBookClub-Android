@@ -49,7 +49,6 @@ public class ReceivedBookListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = null;
         BookObj book = bookObjList.get(position);
-        //System.out.println();
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater)
                     context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -66,28 +65,28 @@ public class ReceivedBookListAdapter extends BaseAdapter {
         TextView senderNameText = v.findViewById(R.id.req_sender_name);
         TextView bookNameText = v.findViewById(R.id.book_name);
         TextView authorNameText = v.findViewById(R.id.author_name);
-        Button reqButton = v.findViewById(R.id.allow_req_btn);
-        Button readButton = v.findViewById(R.id.reject_req_btn);
+        Button allowButton = v.findViewById(R.id.allow_req_btn);
+        Button rejectButton = v.findViewById(R.id.reject_req_btn);
 
         System.out.println("Boooooooooooooooooooooooooooooooooooooooooooooookkkkkkkkkkkkkkkkkkkkkkkkkkkk");
         System.out.println(book);
 
         if (book.getAvailability().equals("no")) {
-            reqButton.setClickable(false);
-            reqButton.setText("Not Available");
+            allowButton.setClickable(false);
+            allowButton.setText("Not Available");
         } else if (book.getAvailability().equals("yes")) {
-            reqButton.setText("Request Book");
-            reqButton.setClickable(true);
+            allowButton.setText("ALLOW");
+            allowButton.setClickable(true);
         }
 
-        reqButton.setOnClickListener(new View.OnClickListener() {
+        allowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //send a request to book owner
             }
         });
 
-        readButton.setOnClickListener(new View.OnClickListener() {
+        rejectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //current user e book read list e thakle unread banate hobe else read

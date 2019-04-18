@@ -3,7 +3,12 @@ package adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,8 +78,8 @@ public class BookListAdapter extends BaseAdapter {
         ImageView bookImageView = v.findViewById(R.id.book_img);
         TextView bookNameText = v.findViewById(R.id.book_name);
         TextView authorNameText = v.findViewById(R.id.author_name);
-        Button reqButton = v.findViewById(R.id.req_book_btn);
-        Button readButton = v.findViewById(R.id.read_book_btn);
+        final Button reqButton = v.findViewById(R.id.req_book_btn);
+        final Button readButton = v.findViewById(R.id.read_book_btn);
 
         if (book.getAvailability().equals("no")) {
             reqButton.setClickable(false);
@@ -86,17 +91,13 @@ public class BookListAdapter extends BaseAdapter {
         reqButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 //send a request to book owner
                 mAuth = FirebaseAuth.getInstance();
                 final String user_id = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
 
-//                DatabaseReference req_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
-//                        child("UID").child(user_id).child("sentrequest").child(book.getBook_id());
-//                req_ref.child("name").setValue(book.getName());
-//                req_ref.child("category").setValue(book.getCategory());
-//                req_ref.child("writer").setValue(book.getWriter());
-//                req_ref.child("avaiability").setValue(book.getAvailability());
-//                req_ref.child("bookid").setValue(book.getBook_id());
+                reqButton.setClickable(false);
+                reqButton.setText("Request Sent");
 
                 DatabaseReference uid_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
                         child("UID").child(user_id).child("username");
@@ -157,6 +158,19 @@ public class BookListAdapter extends BaseAdapter {
                                 user_id_ref.child("bookid").setValue(book.getBook_id());
                                 user_id_ref.child("owner").setValue(book.getOwner());
 
+
+                                //Eikhane jhamela acheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                                // Reload current fragment
+//                                Fragment frg = null;
+//                                frg = ((FragmentActivity)context).getSupportFragmentManager().findFragmentByTag("bookfragment");
+//                                final FragmentTransaction ft = ((FragmentActivity)context).getSupportFragmentManager().beginTransaction();
+//                                ft.detach(frg);
+//                                ft.attach(frg);
+//                                ft.commit();
+
+
+
+
                             }
 
                             @Override
@@ -181,6 +195,7 @@ public class BookListAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 //current user e book read list e thakle unread banate hobe else read
+
             }
         });
 

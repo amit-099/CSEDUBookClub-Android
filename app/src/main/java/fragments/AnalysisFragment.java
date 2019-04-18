@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -62,10 +63,10 @@ public class AnalysisFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                Map<String, Object> all_received_req = (Map<String, Object>) dataSnapshot.getValue();
+                HashMap<String, Object> all_received_req = (HashMap<String, Object>) dataSnapshot.getValue();
                 assert all_received_req != null;
                 System.out.println("ALLLLLLLLLLLAAAAAAAAAAAAAALLLLLLLLLLLLLLLLLLAAAAAAAAAAAAAAAAAAAAALLLLLLLLLLLLL                ");
-                System.out.println(all_received_req);
+                //System.out.println(all_received_req);
 
                 if(all_received_req.containsKey("receiverequest")) {
                     collectReqData(all_received_req);
@@ -120,17 +121,22 @@ public class AnalysisFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void collectReqData(Map<String, Object> users) {
+    private void collectReqData(HashMap<String, Object> users) {
+
+        System.out.println(users);
 
 
-        Map<String, Object> req_book = (Map<String, Object>) users.get("receiverequest");
+        HashMap<String, Object> req_book = (HashMap<String, Object>) users.get("receiverequest");
+
+        System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+        System.out.println(req_book);
 
         //iterate through each user, ignoring their UID
-        for (Map.Entry<String, Object> entry : req_book.entrySet()){
+        for (HashMap.Entry<String, Object> entry : req_book.entrySet()){
             BookObj aBook = new BookObj();
 
             //Get user map
-            Map singleBook = (Map) entry.getValue();
+            HashMap singleBook = (HashMap) entry.getValue();
 
             System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
             System.out.println(singleBook);

@@ -2,6 +2,8 @@ package com.example.searchify;
 
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -19,9 +22,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import adapter.BookListAdapter;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ShowProfileActivity extends AppCompatActivity {
     private ArrayList<BookObj> books;
@@ -70,34 +74,98 @@ public class ShowProfileActivity extends AppCompatActivity {
         private_book_ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() instanceof String){
+                if (dataSnapshot.getValue() instanceof String) {
 
-                }
-                else {
-                    Map<String, Object> all_private_books = (Map<String, Object>) dataSnapshot.getValue();
+                } else {
+                    final Map<String, Object> all_private_books = (Map<String, Object>) dataSnapshot.getValue();
                     assert all_private_books != null;
 
                     System.out.println(all_private_books);
 
-                    collectBookData(all_private_books, userName);
+
+                    FirebaseAuth mAuth;
+
+                    mAuth = FirebaseAuth.getInstance();
+                    final String user_id = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+
+                    DatabaseReference my_sent_req_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
+                            child("UID").child(user_id);
+
+                    my_sent_req_ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Map<String, Object> uid_object = (Map<String, Object>) dataSnapshot.getValue();
+
+                            assert uid_object != null;
+                            if (uid_object.containsKey("sentrequest")) {
+                                Map<String, Object> sent_req_book = (Map<String, Object>) uid_object.get("sentrequest");
+
+                                for (Map.Entry<String, Object> entry : all_private_books.entrySet()) {
+                                    BookObj aBook = new BookObj();
+
+                                    //Get user map
+                                    Map singleBook = (Map) entry.getValue();
+                                    if (!(sent_req_book.containsKey(singleBook.get("bookid")))) {
+                                        //Get phone field and append to list
+                                        aBook.setBook_id((String) singleBook.get("bookid"));
+                                        aBook.setName((String) singleBook.get("name"));
+                                        aBook.setAvailability((String) singleBook.get("availability"));
+                                        aBook.setCategory((String) singleBook.get("category"));
+                                        aBook.setOwner(userName);
+                                        //aBook.setOwner((String) singleBook.get("owner"));
+                                        aBook.setWriter((String) singleBook.get("writer"));
+
+                                        //phoneNumbers.add((Long) singleUser.get("phone"));
+                                        System.out.println("book      " + aBook.toString());
+                                        books.add(aBook);
+                                    }
+                                }
+
+                            } else {
+                                for (Map.Entry<String, Object> entry : all_private_books.entrySet()) {
+                                    BookObj aBook = new BookObj();
+
+                                    //Get user map
+                                    Map singleBook = (Map) entry.getValue();
+
+                                    //Get phone field and append to list
+                                    aBook.setBook_id((String) singleBook.get("bookid"));
+                                    aBook.setName((String) singleBook.get("name"));
+                                    aBook.setAvailability((String) singleBook.get("availability"));
+                                    aBook.setCategory((String) singleBook.get("category"));
+                                    aBook.setOwner(userName);
+                                    //aBook.setOwner((String) singleBook.get("owner"));
+                                    aBook.setWriter((String) singleBook.get("writer"));
+
+                                    //phoneNumbers.add((Long) singleUser.get("phone"));
+                                    System.out.println("book      " + aBook.toString());
+                                    books.add(aBook);
+
+                                }
+                            }
+                            //List Adapter
+                            bookListAdapter = new BookListAdapter(books, getApplicationContext());
+
+                            bookListView.setAdapter(bookListAdapter);
+                            //bookListView.setClickable(true);
+
+                            bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> adapterView, View view, int itemNumber, long l) {
+                                    Object obj = bookListView.getAdapter().getItem(itemNumber);
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    //collectBookData(all_private_books, userName);
                 }
 
-
-
-                //List Adapter
-                bookListAdapter = new BookListAdapter(books, getApplicationContext());
-
-                bookListView.setAdapter(bookListAdapter);
-                //bookListView.setClickable(true);
-
-                bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int itemNumber, long l) {
-                        Object obj = bookListView.getAdapter().getItem(itemNumber);
-
-
-                    }
-                });
 
             }
 
@@ -107,49 +175,11 @@ public class ShowProfileActivity extends AppCompatActivity {
             }
         });
 
-//        DatabaseReference public_book_ref = FirebaseDatabase.getInstance().getReference().child("Books");
-//
-//        public_book_ref.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                Map<String, Object> all_public_books = (Map<String, Object>) dataSnapshot.getValue();
-//                assert all_public_books != null;
-//                collectBookData(all_public_books);
-//
-//                //List Adapter
-//                bookListAdapter = new BookListAdapter(books, getApplicationContext());
-//
-//                bookListView.setAdapter(bookListAdapter);
-//                //bookListView.setClickable(true);
-//
-//                bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(AdapterView<?> adapterView, View view, int itemNumber, long l) {
-//                        Object obj = bookListView.getAdapter().getItem(itemNumber);
-//
-//
-//                    }
-//                });
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-
-
-
-
-
     }
 
     private void collectBookData(Map<String, Object> users, String owner) {
-
-
         //iterate through each user, ignoring their UID
-        for (Map.Entry<String, Object> entry : users.entrySet()){
+        for (Map.Entry<String, Object> entry : users.entrySet()) {
             BookObj aBook = new BookObj();
 
             //Get user map
