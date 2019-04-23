@@ -14,13 +14,14 @@ import android.view.ViewGroup;
 import fragments.RequestFragment;
 import fragments.BookFragment;
 import fragments.HomeFragment;
+import fragments.TestFragment;
 
 
 public class TabFragment extends Fragment {
 
     public static TabLayout tabLayout;
     public static ViewPager viewPager;
-    public static int int_items = 3;
+    public static int int_items = 4;
 
     @Nullable
     @Override
@@ -58,8 +59,8 @@ public class TabFragment extends Fragment {
                     return new BookFragment();
                 case 2:
                     return new RequestFragment();
-//                case 3:
-//                    return new GoalFragment();
+                case 3:
+                   return new TestFragment();
 
             }
             return null;
@@ -81,8 +82,8 @@ public class TabFragment extends Fragment {
                     return getResources().getString(R.string.tab2);
                 case 2:
                     return getResources().getString(R.string.tab3);
-//                case 3:
-//                    return "Goal";
+                case 3:
+                    return "Test";
 
             }
             return null;
