@@ -10,7 +10,7 @@
     <!--tab name-->
     <string name="tab1">Home</string>
     <string name="tab2">Books</string>
-    <string name="tab3">Analysis</string>
+    <string name="tab3">Requests</string>
 
 
     <!--navigation drawer menu name-->

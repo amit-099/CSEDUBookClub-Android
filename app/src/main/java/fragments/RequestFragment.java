@@ -2,7 +2,6 @@ package fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -23,12 +22,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import adapter.ReceivedBookListAdapter;
 
-public class AnalysisFragment extends Fragment {
+public class RequestFragment extends Fragment {
     private ArrayList<BookObj> books;
 
     //List Adapter Init
@@ -36,14 +34,15 @@ public class AnalysisFragment extends Fragment {
     private ReceivedBookListAdapter bookListAdapter;
     private List<String> new_user = new ArrayList<>();
     private FirebaseAuth mAuth;
+    private String from;
 
-    public AnalysisFragment() {
+    public RequestFragment() {
 
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_analysis, container, false);
+        View view = inflater.inflate(R.layout.fragment_requests, container, false);
 
         books = new ArrayList<>();
 
@@ -74,7 +73,7 @@ public class AnalysisFragment extends Fragment {
 
 
                     //List Adapter
-                    bookListAdapter = new ReceivedBookListAdapter(books, getContext());
+                    bookListAdapter = new ReceivedBookListAdapter(books, from, getContext());
 
                     bookListView.setAdapter(bookListAdapter);
                     //bookListView.setClickable(true);
@@ -136,18 +135,44 @@ public class AnalysisFragment extends Fragment {
             BookObj aBook = new BookObj();
 
             //Get user map
-            HashMap singleBook = (HashMap) entry.getValue();
+            HashMap<String, Object> singleBook = (HashMap<String, Object>) entry.getValue();
+            System.out.println("oooooooooooooooooooooooooooooooooooooooooooo");
+            System.out.println(singleBook);
+            HashMap singleBook1 = new HashMap();
+//            for (Object ent : singleBook.entrySet()){
+//                if(!ent.equals("from")) {
+//                    singleBook1 = (HashMap) entry.getValue();
+//                }
+//            }
+
+
+            for (HashMap.Entry<String, Object> entry2 : singleBook.entrySet()) {
+                System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+                System.out.println(entry2.getValue() + "        " + entry2.getKey());
+                if (!entry2.getKey().equals("from")) {
+                    singleBook1 = (HashMap) entry2.getValue();
+                }
+                else
+                {
+                    from = (String) entry2.getValue();
+                }
+            }
+
+
+
+
+
 
             System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
-            System.out.println(singleBook);
+            System.out.println(singleBook1);
 
             //Get phone field and append to list
-            aBook.setName((String) singleBook.get("name"));
-            aBook.setAvailability((String) singleBook.get("availability"));
-            aBook.setCategory((String) singleBook.get("category"));
-            aBook.setOwner((String) singleBook.get("owner"));
-            aBook.setWriter((String) singleBook.get("writer"));
-            aBook.setBook_id((String) singleBook.get("bookid"));
+            aBook.setName((String) singleBook1.get("name"));
+            aBook.setAvailability((String) singleBook1.get("availability"));
+            aBook.setCategory((String) singleBook1.get("category"));
+            aBook.setOwner((String) singleBook1.get("owner"));
+            aBook.setWriter((String) singleBook1.get("writer"));
+            aBook.setBook_id((String) singleBook1.get("bookid"));
 
             //phoneNumbers.add((Long) singleUser.get("phone"));
             System.out.println("book      " + aBook.toString());

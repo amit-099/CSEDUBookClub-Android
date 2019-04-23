@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import fragments.AnalysisFragment;
+import fragments.RequestFragment;
 import fragments.BookFragment;
 import fragments.HomeFragment;
 
@@ -57,7 +57,7 @@ public class TabFragment extends Fragment {
                 case 1:
                     return new BookFragment();
                 case 2:
-                    return new AnalysisFragment();
+                    return new RequestFragment();
 //                case 3:
 //                    return new GoalFragment();
 

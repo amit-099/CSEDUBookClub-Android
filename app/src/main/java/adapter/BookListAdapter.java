@@ -29,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 public class BookListAdapter extends BaseAdapter {
     public List<BookObj> bookObjList;
@@ -130,14 +131,29 @@ public class BookListAdapter extends BaseAdapter {
                         user_name_ref.child("owner").setValue(book.getOwner());
 
 
+
+
+
+
+
+                        final String code = getSaltString();
+
+
+
                         final DatabaseReference receive_req = FirebaseDatabase.getInstance().getReference().child("Users").
-                                child("Owners").child("username").child(book.getOwner()).child("receiverequest").child(book.getBook_id());
-                        receive_req.child("name").setValue(book.getName());
-                        receive_req.child("category").setValue(book.getCategory());
-                        receive_req.child("writer").setValue(book.getWriter());
-                        receive_req.child("availability").setValue(book.getAvailability());
-                        receive_req.child("bookid").setValue(book.getBook_id());
-                        receive_req.child("owner").setValue(book.getOwner());
+                                child("Owners").child("username").child(book.getOwner()).child("receiverequest").child(code);
+
+                        final DatabaseReference r1_ref = receive_req.child(book.getBook_id());
+
+                        r1_ref.child("name").setValue(book.getName());
+                        r1_ref.child("category").setValue(book.getCategory());
+                        r1_ref.child("writer").setValue(book.getWriter());
+                        r1_ref.child("availability").setValue(book.getAvailability());
+                        r1_ref.child("bookid").setValue(book.getBook_id());
+                        r1_ref.child("owner").setValue(book.getOwner());
+
+                        final DatabaseReference r2_ref = receive_req.child("from");
+                        r2_ref.setValue(user_name);
 
 
                         final DatabaseReference uid_ref = FirebaseDatabase.getInstance().getReference().child("Users").
@@ -150,13 +166,19 @@ public class BookListAdapter extends BaseAdapter {
 
 
                                 final DatabaseReference user_id_ref = FirebaseDatabase.getInstance().getReference().child("Users").
-                                        child("Owners").child("UID").child(user_id).child("receiverequest").child(book.getBook_id());
-                                user_id_ref.child("name").setValue(book.getName());
-                                user_id_ref.child("category").setValue(book.getCategory());
-                                user_id_ref.child("writer").setValue(book.getWriter());
-                                user_id_ref.child("availability").setValue(book.getAvailability());
-                                user_id_ref.child("bookid").setValue(book.getBook_id());
-                                user_id_ref.child("owner").setValue(book.getOwner());
+                                        child("Owners").child("UID").child(user_id).child("receiverequest").child(code);
+
+                                final DatabaseReference r3_ref = user_id_ref.child(book.getBook_id());
+
+                                r3_ref.child("name").setValue(book.getName());
+                                r3_ref.child("category").setValue(book.getCategory());
+                                r3_ref.child("writer").setValue(book.getWriter());
+                                r3_ref.child("availability").setValue(book.getAvailability());
+                                r3_ref.child("bookid").setValue(book.getBook_id());
+                                r3_ref.child("owner").setValue(book.getOwner());
+
+                                final DatabaseReference r4_ref = user_id_ref.child("from");
+                                r4_ref.setValue(user_name);
 
 
                                 //Eikhane jhamela acheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
@@ -216,4 +238,18 @@ public class BookListAdapter extends BaseAdapter {
 
         return v;
     }
+
+    protected static String getSaltString() {
+        int length = 6;
+        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < length) { // length of the random string.
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
+        }
+        return salt.toString();
+
+    }
+
 }
