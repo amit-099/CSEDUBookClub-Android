@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -37,7 +38,6 @@ public class MyProfileActivity extends AppCompatActivity {
     private CircleImageView profilePic;
     private TextView profileName;
     private Typeface mTfLight, mTfRegular, mTfBold;
-    private String userName, fullName;
 
 //    //List Adapter Init
 //    private ListView bookListView;
@@ -48,8 +48,7 @@ public class MyProfileActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter adapter;
 
-    FirebaseAuth mAuth;
-    final String user_id = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+    private FirebaseAuth mAuth;
 
 
     @Override
@@ -79,118 +78,149 @@ public class MyProfileActivity extends AppCompatActivity {
         mTfBold = Typeface.createFromAsset(getAssets(), "OpenSans-Bold.ttf");
 
         profileName.setTypeface(mTfBold);
-        profileName.setText(fullName);
 
-        DatabaseReference private_book_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
-                child("username").child(userName).child("books");
 
-        private_book_ref.addListenerForSingleValueEvent(new ValueEventListener() {
+
+        mAuth = FirebaseAuth.getInstance();
+        final String user_id = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+
+        DatabaseReference uid_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
+                child("UID").child(user_id);
+
+        uid_ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() instanceof String) {
+                //final String user_name = (String) dataSnapshot.getValue();
 
-                } else {
-                    final Map<String, Object> all_private_books = (Map<String, Object>) dataSnapshot.getValue();
-                    assert all_private_books != null;
+                HashMap<String, Object> user = (HashMap<String, Object>) dataSnapshot.getValue();
+                assert user != null;
+                final String user_name = (String) user.get("username");
+                final String fullName = (String) user.get("name");
 
-                    System.out.println(all_private_books);
+                profileName.setText(fullName);
+
+                assert user_name != null;
+
+                DatabaseReference private_book_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
+                        child("username").child(user_name).child("books");
+
+                private_book_ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getValue() instanceof String) {
+
+                        } else {
+                            final Map<String, Object> all_private_books = (Map<String, Object>) dataSnapshot.getValue();
+                            assert all_private_books != null;
+
+                            System.out.println(all_private_books);
 
 
-                    FirebaseAuth mAuth;
+                            FirebaseAuth mAuth;
 
-                    mAuth = FirebaseAuth.getInstance();
-                    final String user_id = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+                            mAuth = FirebaseAuth.getInstance();
+                            final String user_id = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
 
-                    DatabaseReference my_sent_req_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
-                            child("UID").child(user_id);
+                            DatabaseReference my_sent_req_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
+                                    child("UID").child(user_id);
 
-                    my_sent_req_ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            Map<String, Object> uid_object = (Map<String, Object>) dataSnapshot.getValue();
+                            my_sent_req_ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    Map<String, Object> uid_object = (Map<String, Object>) dataSnapshot.getValue();
 
-                            assert uid_object != null;
-                            if (uid_object.containsKey("sentrequest")) {
-                                Map<String, Object> sent_req_book = (Map<String, Object>) uid_object.get("sentrequest");
+                                    assert uid_object != null;
+                                    if (uid_object.containsKey("sentrequest")) {
+                                        Map<String, Object> sent_req_book = (Map<String, Object>) uid_object.get("sentrequest");
 
-                                for (Map.Entry<String, Object> entry : all_private_books.entrySet()) {
-                                    BookObj aBook = new BookObj();
+                                        for (Map.Entry<String, Object> entry : all_private_books.entrySet()) {
+                                            BookObj aBook = new BookObj();
 
-                                    //Get user map
-                                    Map singleBook = (Map) entry.getValue();
-                                    if (!(sent_req_book.containsKey(singleBook.get("bookid")))) {
-                                        //Get phone field and append to list
-                                        aBook.setBook_id((String) singleBook.get("bookid"));
-                                        aBook.setName((String) singleBook.get("name"));
-                                        aBook.setAvailability((String) singleBook.get("availability"));
-                                        aBook.setCategory((String) singleBook.get("category"));
-                                        aBook.setOwner(userName);
-                                        //aBook.setOwner((String) singleBook.get("owner"));
-                                        aBook.setWriter((String) singleBook.get("writer"));
+                                            //Get user map
+                                            Map singleBook = (Map) entry.getValue();
+                                            if (!(sent_req_book.containsKey(singleBook.get("bookid")))) {
+                                                //Get phone field and append to list
+                                                aBook.setBook_id((String) singleBook.get("bookid"));
+                                                aBook.setName((String) singleBook.get("name"));
+                                                aBook.setAvailability((String) singleBook.get("availability"));
+                                                aBook.setCategory((String) singleBook.get("category"));
+                                                aBook.setOwner(user_name);
+                                                //aBook.setOwner((String) singleBook.get("owner"));
+                                                aBook.setWriter((String) singleBook.get("writer"));
 
-                                        if(singleBook.containsKey("imageuri"))
-                                        {
-                                            aBook.setImageuri((String) singleBook.get("imageuri"));
+                                                if(singleBook.containsKey("imageuri"))
+                                                {
+                                                    aBook.setImageuri((String) singleBook.get("imageuri"));
+                                                }
+                                                else {
+                                                    aBook.setImageuri("noimageuri");
+
+                                                }
+
+                                                //phoneNumbers.add((Long) singleUser.get("phone"));
+                                                System.out.println("book      " + aBook.toString());
+                                                books.add(aBook);
+                                            }
                                         }
-                                        else {
-                                            aBook.setImageuri("noimageuri");
+
+                                    } else {
+                                        for (Map.Entry<String, Object> entry : all_private_books.entrySet()) {
+                                            BookObj aBook = new BookObj();
+
+                                            //Get user map
+                                            Map singleBook = (Map) entry.getValue();
+
+                                            //Get phone field and append to list
+                                            aBook.setBook_id((String) singleBook.get("bookid"));
+                                            aBook.setName((String) singleBook.get("name"));
+                                            aBook.setAvailability((String) singleBook.get("availability"));
+                                            aBook.setCategory((String) singleBook.get("category"));
+                                            aBook.setOwner(user_name);
+                                            //aBook.setOwner((String) singleBook.get("owner"));
+                                            aBook.setWriter((String) singleBook.get("writer"));
+
+                                            if(singleBook.containsKey("imageuri"))
+                                            {
+                                                aBook.setImageuri((String) singleBook.get("imageuri"));
+                                            }
+                                            else {
+                                                aBook.setImageuri("noimageuri");
+
+                                            }
+
+                                            //phoneNumbers.add((Long) singleUser.get("phone"));
+                                            System.out.println("book      " + aBook.toString());
+                                            books.add(aBook);
 
                                         }
-
-                                        //phoneNumbers.add((Long) singleUser.get("phone"));
-                                        System.out.println("book      " + aBook.toString());
-                                        books.add(aBook);
                                     }
+                                    recyclerView = findViewById(R.id.books_recycler_view);
+                                    layoutManager = new LinearLayoutManager(getApplicationContext());
+                                    recyclerView.setLayoutManager(layoutManager);
+
+                                    adapter = new BookListAdapter(books);
+                                    recyclerView.setAdapter(adapter);
+
                                 }
 
-                            } else {
-                                for (Map.Entry<String, Object> entry : all_private_books.entrySet()) {
-                                    BookObj aBook = new BookObj();
-
-                                    //Get user map
-                                    Map singleBook = (Map) entry.getValue();
-
-                                    //Get phone field and append to list
-                                    aBook.setBook_id((String) singleBook.get("bookid"));
-                                    aBook.setName((String) singleBook.get("name"));
-                                    aBook.setAvailability((String) singleBook.get("availability"));
-                                    aBook.setCategory((String) singleBook.get("category"));
-                                    aBook.setOwner(userName);
-                                    //aBook.setOwner((String) singleBook.get("owner"));
-                                    aBook.setWriter((String) singleBook.get("writer"));
-
-                                    if(singleBook.containsKey("imageuri"))
-                                    {
-                                        aBook.setImageuri((String) singleBook.get("imageuri"));
-                                    }
-                                    else {
-                                        aBook.setImageuri("noimageuri");
-
-                                    }
-
-                                    //phoneNumbers.add((Long) singleUser.get("phone"));
-                                    System.out.println("book      " + aBook.toString());
-                                    books.add(aBook);
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
 
                                 }
-                            }
-                            recyclerView = findViewById(R.id.books_recycler_view);
-                            layoutManager = new LinearLayoutManager(getApplicationContext());
-                            recyclerView.setLayoutManager(layoutManager);
+                            });
 
-                            adapter = new BookListAdapter(books);
-                            recyclerView.setAdapter(adapter);
-
+                            //collectBookData(all_private_books, userName);
                         }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                        }
-                    });
+                    }
 
-                    //collectBookData(all_private_books, userName);
-                }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
 
 
             }
@@ -200,6 +230,130 @@ public class MyProfileActivity extends AppCompatActivity {
 
             }
         });
+
+
+
+
+
+//        DatabaseReference private_book_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
+//                child("username").child(userName).child("books");
+//
+//        private_book_ref.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.getValue() instanceof String) {
+//
+//                } else {
+//                    final Map<String, Object> all_private_books = (Map<String, Object>) dataSnapshot.getValue();
+//                    assert all_private_books != null;
+//
+//                    System.out.println(all_private_books);
+//
+//
+//                    FirebaseAuth mAuth;
+//
+//                    mAuth = FirebaseAuth.getInstance();
+//                    final String user_id = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+//
+//                    DatabaseReference my_sent_req_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
+//                            child("UID").child(user_id);
+//
+//                    my_sent_req_ref.addListenerForSingleValueEvent(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                            Map<String, Object> uid_object = (Map<String, Object>) dataSnapshot.getValue();
+//
+//                            assert uid_object != null;
+//                            if (uid_object.containsKey("sentrequest")) {
+//                                Map<String, Object> sent_req_book = (Map<String, Object>) uid_object.get("sentrequest");
+//
+//                                for (Map.Entry<String, Object> entry : all_private_books.entrySet()) {
+//                                    BookObj aBook = new BookObj();
+//
+//                                    //Get user map
+//                                    Map singleBook = (Map) entry.getValue();
+//                                    if (!(sent_req_book.containsKey(singleBook.get("bookid")))) {
+//                                        //Get phone field and append to list
+//                                        aBook.setBook_id((String) singleBook.get("bookid"));
+//                                        aBook.setName((String) singleBook.get("name"));
+//                                        aBook.setAvailability((String) singleBook.get("availability"));
+//                                        aBook.setCategory((String) singleBook.get("category"));
+//                                        aBook.setOwner(userName);
+//                                        //aBook.setOwner((String) singleBook.get("owner"));
+//                                        aBook.setWriter((String) singleBook.get("writer"));
+//
+//                                        if(singleBook.containsKey("imageuri"))
+//                                        {
+//                                            aBook.setImageuri((String) singleBook.get("imageuri"));
+//                                        }
+//                                        else {
+//                                            aBook.setImageuri("noimageuri");
+//
+//                                        }
+//
+//                                        //phoneNumbers.add((Long) singleUser.get("phone"));
+//                                        System.out.println("book      " + aBook.toString());
+//                                        books.add(aBook);
+//                                    }
+//                                }
+//
+//                            } else {
+//                                for (Map.Entry<String, Object> entry : all_private_books.entrySet()) {
+//                                    BookObj aBook = new BookObj();
+//
+//                                    //Get user map
+//                                    Map singleBook = (Map) entry.getValue();
+//
+//                                    //Get phone field and append to list
+//                                    aBook.setBook_id((String) singleBook.get("bookid"));
+//                                    aBook.setName((String) singleBook.get("name"));
+//                                    aBook.setAvailability((String) singleBook.get("availability"));
+//                                    aBook.setCategory((String) singleBook.get("category"));
+//                                    aBook.setOwner(userName);
+//                                    //aBook.setOwner((String) singleBook.get("owner"));
+//                                    aBook.setWriter((String) singleBook.get("writer"));
+//
+//                                    if(singleBook.containsKey("imageuri"))
+//                                    {
+//                                        aBook.setImageuri((String) singleBook.get("imageuri"));
+//                                    }
+//                                    else {
+//                                        aBook.setImageuri("noimageuri");
+//
+//                                    }
+//
+//                                    //phoneNumbers.add((Long) singleUser.get("phone"));
+//                                    System.out.println("book      " + aBook.toString());
+//                                    books.add(aBook);
+//
+//                                }
+//                            }
+//                            recyclerView = findViewById(R.id.books_recycler_view);
+//                            layoutManager = new LinearLayoutManager(getApplicationContext());
+//                            recyclerView.setLayoutManager(layoutManager);
+//
+//                            adapter = new BookListAdapter(books);
+//                            recyclerView.setAdapter(adapter);
+//
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                        }
+//                    });
+//
+//                    //collectBookData(all_private_books, userName);
+//                }
+//
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
 
     }
 
