@@ -60,7 +60,7 @@ public class TestFragment extends Fragment {
         mViewPager = (ViewPager) view.findViewById(R.id.viewPage);
         adapterView = new ImageAdapter(getContext());
         mViewPager.setAdapter(adapterView);
-        pageSwitcher(1);
+        pageSwitcher(3);
 
 
 

@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -37,9 +39,14 @@ public class ShowProfileActivity extends AppCompatActivity {
     private Typeface mTfLight, mTfRegular, mTfBold;
     private String userName, fullName;
 
-    //List Adapter Init
-    private ListView bookListView;
-    private BookListAdapter bookListAdapter;
+//    //List Adapter Init
+//    private ListView bookListView;
+//    private BookListAdapter bookListAdapter;
+
+
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    private RecyclerView.Adapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +60,7 @@ public class ShowProfileActivity extends AppCompatActivity {
         fullName = bundle.getString("fullname");
 
         books = new ArrayList<>();
-        bookListView = findViewById(R.id.book_list_view);
+        //bookListView = findViewById(R.id.book_list_view);
 
 
         coverImage = findViewById(R.id.header_cover_image);
@@ -115,6 +122,15 @@ public class ShowProfileActivity extends AppCompatActivity {
                                         //aBook.setOwner((String) singleBook.get("owner"));
                                         aBook.setWriter((String) singleBook.get("writer"));
 
+                                        if(singleBook.containsKey("imageuri"))
+                                        {
+                                            aBook.setImageuri((String) singleBook.get("imageuri"));
+                                        }
+                                        else {
+                                            aBook.setImageuri("noimageuri");
+
+                                        }
+
                                         //phoneNumbers.add((Long) singleUser.get("phone"));
                                         System.out.println("book      " + aBook.toString());
                                         books.add(aBook);
@@ -137,24 +153,40 @@ public class ShowProfileActivity extends AppCompatActivity {
                                     //aBook.setOwner((String) singleBook.get("owner"));
                                     aBook.setWriter((String) singleBook.get("writer"));
 
+                                    if(singleBook.containsKey("imageuri"))
+                                    {
+                                        aBook.setImageuri((String) singleBook.get("imageuri"));
+                                    }
+                                    else {
+                                        aBook.setImageuri("noimageuri");
+
+                                    }
+
                                     //phoneNumbers.add((Long) singleUser.get("phone"));
                                     System.out.println("book      " + aBook.toString());
                                     books.add(aBook);
 
                                 }
                             }
-                            //List Adapter
-                            bookListAdapter = new BookListAdapter(books, getApplicationContext());
+                            recyclerView = findViewById(R.id.books_recycler_view);
+                            layoutManager = new LinearLayoutManager(getApplicationContext());
+                            recyclerView.setLayoutManager(layoutManager);
 
-                            bookListView.setAdapter(bookListAdapter);
-                            //bookListView.setClickable(true);
+                            adapter = new BookListAdapter(books);
+                            recyclerView.setAdapter(adapter);
 
-                            bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> adapterView, View view, int itemNumber, long l) {
-                                    Object obj = bookListView.getAdapter().getItem(itemNumber);
-                                }
-                            });
+//                            //List Adapter
+//                            bookListAdapter = new BookListAdapter(books, getApplicationContext());
+//
+//                            bookListView.setAdapter(bookListAdapter);
+//                            //bookListView.setClickable(true);
+//
+//                            bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                                @Override
+//                                public void onItemClick(AdapterView<?> adapterView, View view, int itemNumber, long l) {
+//                                    Object obj = bookListView.getAdapter().getItem(itemNumber);
+//                                }
+//                            });
                         }
 
                         @Override
@@ -175,32 +207,6 @@ public class ShowProfileActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    private void collectBookData(Map<String, Object> users, String owner) {
-        //iterate through each user, ignoring their UID
-        for (Map.Entry<String, Object> entry : users.entrySet()) {
-            BookObj aBook = new BookObj();
-
-            //Get user map
-            Map singleBook = (Map) entry.getValue();
-
-            //Get phone field and append to list
-            aBook.setBook_id((String) singleBook.get("bookid"));
-            aBook.setName((String) singleBook.get("name"));
-            aBook.setAvailability((String) singleBook.get("availability"));
-            aBook.setCategory((String) singleBook.get("category"));
-            aBook.setOwner(owner);
-            //aBook.setOwner((String) singleBook.get("owner"));
-            aBook.setWriter((String) singleBook.get("writer"));
-
-            //phoneNumbers.add((Long) singleUser.get("phone"));
-            System.out.println("book      " + aBook.toString());
-            books.add(aBook);
-        }
-        //System.out.println("qqqqqq   " + new_user.size());
-
-        System.out.println("bookssssssss   " + books.toString());
     }
 
 

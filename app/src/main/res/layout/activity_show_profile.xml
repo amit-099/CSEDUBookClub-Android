@@ -75,13 +75,11 @@
 
 
         </RelativeLayout>
-        <ListView
-            android:id="@+id/book_list_view"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/books_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="460dp"
-            android:paddingTop="0dp">
-
-        </ListView>
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     </LinearLayout>
 

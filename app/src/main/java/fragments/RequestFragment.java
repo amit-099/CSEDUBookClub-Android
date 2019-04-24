@@ -3,6 +3,8 @@ package fragments;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,14 +26,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+import adapter.BookListAdapter;
 import adapter.ReceivedBookListAdapter;
 
 public class RequestFragment extends Fragment {
     private ArrayList<BookObj> books, allowed_books, shown_books;
 
     //List Adapter Init
-    private ListView bookListView;
-    private ReceivedBookListAdapter bookListAdapter;
+//    private ListView bookListView;
+//    private ReceivedBookListAdapter bookListAdapter;
+
+
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    private RecyclerView.Adapter adapter;
+
+
     private List<String> new_user = new ArrayList<>();
     private FirebaseAuth mAuth;
     private String from;
@@ -42,13 +52,13 @@ public class RequestFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_requests, container, false);
+        final View view = inflater.inflate(R.layout.fragment_requests, container, false);
 
         books = new ArrayList<>();
         allowed_books = new ArrayList<>();
         shown_books = new ArrayList<>();
 
-        bookListView = view.findViewById(R.id.received_req_book_list_view);
+        //bookListView = view.findViewById(R.id.received_req_book_list_view);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -88,33 +98,46 @@ public class RequestFragment extends Fragment {
                                 collectAllowedData(all_allowed_req);
                                 collectShowData();
 
+
+                                recyclerView = view.findViewById(R.id.reveived_books_recycler_view);
+                                layoutManager = new LinearLayoutManager(getContext());
+                                recyclerView.setLayoutManager(layoutManager);
+
+                                adapter = new ReceivedBookListAdapter(shown_books, from);
+                                recyclerView.setAdapter(adapter);
                                 //List Adapter
-                                bookListAdapter = new ReceivedBookListAdapter(shown_books, from, getContext());
-
-                                bookListView.setAdapter(bookListAdapter);
-                                //bookListView.setClickable(true);
-
-                                bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> adapterView, View view, int itemNumber, long l) {
-                                        Object obj = bookListView.getAdapter().getItem(itemNumber);
-                                    }
-                                });
-                            } else {
-                                //List Adapter
-                                bookListAdapter = new ReceivedBookListAdapter(books, from, getContext());
-
-                                bookListView.setAdapter(bookListAdapter);
-                                //bookListView.setClickable(true);
-
-                                bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> adapterView, View view, int itemNumber, long l) {
-                                        Object obj = bookListView.getAdapter().getItem(itemNumber);
+//                                bookListAdapter = new ReceivedBookListAdapter(shown_books, from, getContext());
 //
+//                                bookListView.setAdapter(bookListAdapter);
+//                                //bookListView.setClickable(true);
+//
+//                                bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                                    @Override
+//                                    public void onItemClick(AdapterView<?> adapterView, View view, int itemNumber, long l) {
+//                                        Object obj = bookListView.getAdapter().getItem(itemNumber);
+//                                    }
+//                                });
+                            } else {
+                                recyclerView = view.findViewById(R.id.reveived_books_recycler_view);
+                                layoutManager = new LinearLayoutManager(getContext());
+                                recyclerView.setLayoutManager(layoutManager);
 
-                                    }
-                                });
+                                adapter = new ReceivedBookListAdapter(books, from);
+                                recyclerView.setAdapter(adapter);
+                                //List Adapter
+//                                bookListAdapter = new ReceivedBookListAdapter(books, from, getContext());
+//
+//                                bookListView.setAdapter(bookListAdapter);
+//                                //bookListView.setClickable(true);
+//
+//                                bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                                    @Override
+//                                    public void onItemClick(AdapterView<?> adapterView, View view, int itemNumber, long l) {
+//                                        Object obj = bookListView.getAdapter().getItem(itemNumber);
+////
+//
+//                                    }
+//                                });
                             }
 
 
@@ -177,19 +200,13 @@ public class RequestFragment extends Fragment {
 
             //Get user map
             HashMap<String, Object> singleBook = (HashMap<String, Object>) entry.getValue();
-            System.out.println("oooooooooooooooooooooooooooooooooooooooooooo");
-            System.out.println(singleBook);
+
             HashMap singleBook1 = new HashMap();
-//            for (Object ent : singleBook.entrySet()){
-//                if(!ent.equals("from")) {
-//                    singleBook1 = (HashMap) entry.getValue();
-//                }
-//            }
+
 
 
             for (HashMap.Entry<String, Object> entry2 : singleBook.entrySet()) {
-                System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-                System.out.println(entry2.getValue() + "        " + entry2.getKey());
+
                 if (!entry2.getKey().equals("from")) {
                     singleBook1 = (HashMap) entry2.getValue();
                 }
@@ -199,8 +216,7 @@ public class RequestFragment extends Fragment {
                 }
             }
 
-            System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
-            System.out.println(singleBook1);
+
 
             //Get phone field and append to list
             aBook.setName((String) singleBook1.get("name"));
@@ -210,20 +226,24 @@ public class RequestFragment extends Fragment {
             aBook.setWriter((String) singleBook1.get("writer"));
             aBook.setBook_id((String) singleBook1.get("bookid"));
 
-            //phoneNumbers.add((Long) singleUser.get("phone"));
-            System.out.println("book      " + aBook.toString());
+
+            if(singleBook1.containsKey("imageuri"))
+            {
+                aBook.setImageuri((String) singleBook1.get("imageuri"));
+            }
+            else {
+                aBook.setImageuri("noimageuri");
+
+            }
+
             books.add(aBook);
         }
         //System.out.println("qqqqqq   " + new_user.size());
 
-        System.out.println("bookssssssss   " + books.toString());
     }
 
     private void collectAllowedData(HashMap<String, Object> allowed) {
         HashMap<String, Object> allowed_book = (HashMap<String, Object>) allowed.get("allowed");
-
-        System.out.println("allowed           DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
-        System.out.println(allowed_book);
 
         //iterate through each user, ignoring their UID
         for (HashMap.Entry<String, Object> entry : allowed_book.entrySet()){
@@ -231,8 +251,6 @@ public class RequestFragment extends Fragment {
 
             //Get user map
             HashMap<String, Object> singleBook = (HashMap<String, Object>) entry.getValue();
-            System.out.println("allowed          oooooooooooooooooooooooooooooooooooooooooooo");
-            System.out.println(singleBook);
 
             //Get phone field and append to list
             aBook.setName((String) singleBook.get("name"));
@@ -242,8 +260,15 @@ public class RequestFragment extends Fragment {
             aBook.setWriter((String) singleBook.get("writer"));
             aBook.setBook_id((String) singleBook.get("bookid"));
 
-            //phoneNumbers.add((Long) singleUser.get("phone"));
-            System.out.println("allowed            book      " + aBook.toString());
+            if(singleBook.containsKey("imageuri"))
+            {
+                aBook.setImageuri((String) singleBook.get("imageuri"));
+            }
+            else {
+                aBook.setImageuri("noimageuri");
+
+            }
+
             allowed_books.add(aBook);
         }
         //System.out.println("qqqqqq   " + new_user.size());
@@ -252,10 +277,7 @@ public class RequestFragment extends Fragment {
     }
 
     private void collectShowData() {
-        System.out.println("CollectShownData-------------------------------");
-        System.out.println(books);
-        System.out.println("allowed----------------------------------------");
-        System.out.println(allowed_books);
+
         for(int i = 0; i < books.size(); i++) {
             boolean flag = true;
             for(int j = 0; j < allowed_books.size(); j++) {
@@ -273,6 +295,8 @@ public class RequestFragment extends Fragment {
                 aShownBook.setName(books.get(i).getName());
                 aShownBook.setOwner(books.get(i).getOwner());
                 aShownBook.setWriter(books.get(i).getWriter());
+                aShownBook.setImageuri(books.get(i).getImageuri());
+
                 shown_books.add(aShownBook);
             }
         }

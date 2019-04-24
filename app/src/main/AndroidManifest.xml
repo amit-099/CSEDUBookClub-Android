@@ -31,7 +31,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddBookActivity" />
-        <activity android:name=".ShowProfileActivity"></activity>
+        <activity android:name=".ShowProfileActivity" />
+        <activity android:name=".EditProfileActivity"></activity>
     </application>
 
 </manifest>

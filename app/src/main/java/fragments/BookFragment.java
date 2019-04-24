@@ -1,16 +1,14 @@
 package fragments;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.searchify.BookObj;
@@ -32,10 +30,16 @@ import adapter.BookListAdapter;
 public class BookFragment extends Fragment {
     private ArrayList<BookObj> books;
 
-    //List Adapter Init
-    private ListView bookListView;
-    private BookListAdapter bookListAdapter;
-    private List<String> new_user = new ArrayList<>();
+//    //List Adapter Init
+//    private ListView bookListView;
+//    private BookListAdapter bookListAdapter;
+//    private List<String> new_user = new ArrayList<>();
+
+
+
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    private RecyclerView.Adapter adapter;
 
     public BookFragment() {
 
@@ -43,14 +47,12 @@ public class BookFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_book, container, false);
+        final View view = inflater.inflate(R.layout.fragment_book, container, false);
 
         books = new ArrayList<>();
 
-        bookListView = view.findViewById(R.id.all_book_list_view);
+        //bookListView = view.findViewById(R.id.all_book_list_view);
 
-
-        System.out.println("Entering booooooooookssssssssss");
 
         DatabaseReference public_book_ref = FirebaseDatabase.getInstance().getReference().child("Books");
 
@@ -96,7 +98,14 @@ public class BookFragment extends Fragment {
                                     aBook.setCategory((String) singleBook.get("category"));
                                     aBook.setOwner((String) singleBook.get("owner"));
                                     aBook.setWriter((String) singleBook.get("writer"));
+                                    if(singleBook.containsKey("imageuri"))
+                                    {
+                                        aBook.setImageuri((String) singleBook.get("imageuri"));
+                                    }
+                                    else {
+                                        aBook.setImageuri("noimageuri");
 
+                                    }
                                     //phoneNumbers.add((Long) singleUser.get("phone"));
                                     //System.out.println("book      " + aBook.toString());
                                     books.add(aBook);
@@ -117,25 +126,45 @@ public class BookFragment extends Fragment {
                                 aBook.setOwner((String) singleBook.get("owner"));
                                 aBook.setWriter((String) singleBook.get("writer"));
 
+                                if(singleBook.containsKey("imageuri"))
+                                {
+                                    aBook.setImageuri((String) singleBook.get("imageuri"));
+                                }
+                                else {
+                                    aBook.setImageuri("noimageuri");
+
+                                }
+
                                 //phoneNumbers.add((Long) singleUser.get("phone"));
                                 //System.out.println("book      " + aBook.toString());
                                 books.add(aBook);
 
                             }
                         }
-                        //List Adapter
-                        bookListAdapter = new BookListAdapter(books, getContext());
 
-                        bookListView.setAdapter(bookListAdapter);
-                        //bookListView.setClickable(true);
 
-                        bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int itemNumber, long l) {
-                                Object obj = bookListView.getAdapter().getItem(itemNumber);
+                        recyclerView = view.findViewById(R.id.books_recycler_view);
+                        layoutManager = new LinearLayoutManager(getContext());
+                        recyclerView.setLayoutManager(layoutManager);
 
-                            }
-                        });
+                        adapter = new BookListAdapter(books);
+                        recyclerView.setAdapter(adapter);
+
+
+
+//                        //List Adapter
+//                        bookListAdapter = new BookListAdapter(books, getContext());
+//
+//                        bookListView.setAdapter(bookListAdapter);
+//                        //bookListView.setClickable(true);
+//
+//                        bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                            @Override
+//                            public void onItemClick(AdapterView<?> adapterView, View view, int itemNumber, long l) {
+//                                Object obj = bookListView.getAdapter().getItem(itemNumber);
+//
+//                            }
+//                        });
 
                     }
 

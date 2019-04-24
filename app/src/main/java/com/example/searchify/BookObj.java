@@ -8,13 +8,18 @@ public class BookObj {
     private String availability;
     private String book_id;
 
-    public BookObj(String name, String category, String owner, String writer, String availability, String book_id) {
+
+
+    private String imageuri;
+
+    public BookObj(String name, String category, String owner, String writer, String availability, String book_id, String imageuri) {
         this.name = name;
         this.category = category;
         this.owner = owner;
         this.writer = writer;
         this.availability = availability;
         this.book_id = book_id;
+        this.imageuri = imageuri;
     }
 
     public BookObj() {}
@@ -67,6 +72,13 @@ public class BookObj {
         this.book_id = book_id;
     }
 
+    public String getImageuri() {
+        return imageuri;
+    }
+
+    public void setImageuri(String imageuri) {
+        this.imageuri = imageuri;
+    }
     @Override
     public String toString() {
         return "BookObj{" +

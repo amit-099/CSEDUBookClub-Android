@@ -1,86 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-    <TextView
-        android:id="@+id/req_sender_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/title_text_color"
-        android:textSize="16sp"
-        android:text="Sender Name"/>
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:clickable="true"
+    android:foreground="?selectableItemBackground"
+    card_view:cardCornerRadius="12dp"
+    card_view:cardElevation="3dp"
+    card_view:contentPadding="4dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <ImageView
-            android:id="@+id/book_img"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:contentDescription="@string/app_name"/>
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:layout_width="291dp"
+            android:layout_height="115dp"
+
+            android:layout_marginStart="72dp"
+            android:orientation="vertical">
+
             <TextView
-                android:id="@+id/book_name"
-                android:layout_width="match_parent"
+                android:id="@+id/req_sender_name"
+                android:layout_width="291dp"
                 android:layout_height="wrap_content"
+                android:text="Sender Name"
                 android:textColor="@color/title_text_color"
                 android:textSize="16sp"
-                android:text="Book name"
                 android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/book_name"
+                android:layout_width="291dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/req_sender_name"
+                android:text="Book name"
+                android:textColor="@color/title_text_color"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/author_name"
-                android:layout_width="match_parent"
+                android:layout_width="291dp"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:text="author name"
                 android:textColor="@color/title_text_color"
                 android:textSize="16sp"
                 android:textStyle="italic"
-                android:text="author name"/>
+/>
         </LinearLayout>
 
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-        <Button
-            android:id="@+id/allow_req_btn"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="0px"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_add_black_48dp_01"
-            android:text="Allow"
-            android:textAlignment="textStart"
-            android:textColor="@color/colorPrimary"
 
-            />
+        <ImageView
+            android:id="@+id/book_img"
+            android:layout_width="70dp"
+            android:layout_height="100dp"
+            android:contentDescription="@string/app_name" />
 
-        <Button
-            android:id="@+id/reject_req_btn"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="0px"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_add_black_48dp_01"
-            android:text="Reject"
-            android:textAlignment="textStart"
-            android:textColor="@color/pink"
-            />
 
-    </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/divider" />
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="291dp"
+            android:layout_height="35dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="72dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/allow_req_btn"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Allow"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:background="@color/green"
+                android:layout_margin="@dimen/card_margin"
+
+                />
+
+            <Button
+                android:id="@+id/reject_req_btn"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Reject"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:background="@color/pink"
+                android:layout_margin="@dimen/card_margin"/>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+</android.support.v7.widget.CardView>
 

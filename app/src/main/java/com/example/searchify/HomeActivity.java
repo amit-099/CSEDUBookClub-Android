@@ -70,6 +70,10 @@ public class HomeActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                         break;
+                    case R.id.item_edit:
+                        Intent intent2 = new Intent(HomeActivity.this, EditProfileActivity.class);
+                        startActivity(intent2);
+                        break;
 
 //                    case R.id.friends:
 //                        Intent intent1 = new Intent(HomeActivity.this, UserProfileActivity.class);
@@ -86,10 +90,7 @@ public class HomeActivity extends AppCompatActivity {
 //                        startActivity(intent3);
 //                        break;
 //
-//                    case R.id.item_profile:
-//                        Intent intent5 = new Intent(HomeTabActivity.this, UserProfileActivity.class);
-//                        startActivity(intent5);
-//                        break;
+
                 }
 
                 return true;
