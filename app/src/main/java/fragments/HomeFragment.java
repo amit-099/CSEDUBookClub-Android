@@ -77,17 +77,6 @@ public class HomeFragment extends Fragment {
                 assert all_user != null;
                 collectUserData(all_user);
 
-                for(int i = 0; i < new_user.size(); i++) {
-                    System.out.println("iiiiii    " + new_user.get(i).getUser_name());
-                }
-                System.out.println(new_user.size());
-                for (int i=0;i<new_user.size();i++)
-                {
-                    System.out.println("baaaaaag "+new_user.get(i).getName());
-                }
-//                adapter = new HomeRecyclerAdapter(new_user);
-//                recyclerView.setAdapter(adapter);
-
 
                 //List Adapter
                 userListAdapter = new UserListAdapter(new_user, getContext());

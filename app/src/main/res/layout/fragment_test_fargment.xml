@@ -14,9 +14,22 @@
         android:layout_width="match_parent"
         android:layout_height="200dp" />
 
-
+    <TextView
+        android:id="@+id/popular_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/viewPage"
+        android:background="@color/colorWhite"
+        android:gravity="center"
+        android:text="@string/popular_books"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textColor="@color/quantum_black_100"
+        android:layout_margin="@dimen/card_margin"
+        />
     <HorizontalScrollView
-        android:layout_below="@id/viewPage"
+        android:id="@+id/popbook_scroll"
+        android:layout_below="@id/popular_text"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         >
@@ -38,8 +51,8 @@
                     android:layout_margin="4dp"
                     android:columnWidth="80dp"
                     android:gravity="center"
-                    android:numColumns="5"
                     android:horizontalSpacing="1dp"
+                    android:numColumns="5"
                     android:scrollbarAlwaysDrawHorizontalTrack="true"
                     android:scrollbarAlwaysDrawVerticalTrack="true"
                     android:scrollbars="horizontal"
@@ -52,5 +65,58 @@
             </LinearLayout>
         </FrameLayout>
     </HorizontalScrollView>
+
+
+    <!--<TextView-->
+        <!--android:id="@+id/channel_text"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:layout_below="@id/popbook_scroll"-->
+        <!--android:background="@color/colorWhite"-->
+        <!--android:gravity="center"-->
+        <!--android:text="@string/popular_channels"-->
+        <!--android:textAppearance="@style/TextAppearance.AppCompat.Title"-->
+        <!--android:textColor="@color/quantum_black_100"-->
+        <!--android:layout_margin="@dimen/card_margin"-->
+        <!--/>-->
+    <!--<HorizontalScrollView-->
+        <!--android:layout_below="@id/channel_text"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="fill_parent"-->
+        <!--&gt;-->
+        <!--<FrameLayout-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="match_parent">-->
+
+            <!--<LinearLayout-->
+                <!--android:id="@+id/linearLayout_gridtableLayout2"-->
+                <!--android:layout_width="900dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:orientation="horizontal">-->
+
+                <!--<GridView-->
+                    <!--android:id="@+id/gridView2"-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:layout_height="fill_parent"-->
+                    <!--android:layout_margin="4dp"-->
+                    <!--android:columnWidth="80dp"-->
+                    <!--android:gravity="center"-->
+                    <!--android:horizontalSpacing="1dp"-->
+                    <!--android:numColumns="5"-->
+                    <!--android:scrollbarAlwaysDrawHorizontalTrack="true"-->
+                    <!--android:scrollbarAlwaysDrawVerticalTrack="true"-->
+                    <!--android:scrollbars="horizontal"-->
+                    <!--android:stretchMode="none"-->
+                    <!--android:verticalSpacing="1dp">-->
+
+                <!--</GridView>-->
+
+
+            <!--</LinearLayout>-->
+        <!--</FrameLayout>-->
+    <!--</HorizontalScrollView>-->
+
+
 
 </RelativeLayout>

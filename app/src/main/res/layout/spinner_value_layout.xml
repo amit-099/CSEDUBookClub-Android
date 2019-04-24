@@ -7,11 +7,27 @@
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <ImageView
-            android:id="@+id/spinnerImages"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:contentDescription="@string/app_name"/>
+
+        <RelativeLayout
+            android:layout_width="70dp"
+            android:layout_height="70dp">
+            <ImageView
+                android:id="@+id/spinnerImages"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:contentDescription="@string/app_name"
+                android:background="@drawable/circleshapepink"/>
+            <TextView
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/name_char_text"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:textSize="30sp"
+                android:gravity="center"
+                android:textColor="@color/colorWhite"/>
+        </RelativeLayout>
+
 
         <TextView
             android:id="@+id/spinnerTextView"

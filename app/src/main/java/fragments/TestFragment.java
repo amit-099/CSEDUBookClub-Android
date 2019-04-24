@@ -42,7 +42,10 @@ public class TestFragment extends Fragment {
     private GridView bookListView;
     private ArrayList<BookObj> books;
     private ImageAdapter adapterView;
+
     ViewPager mViewPager;
+
+
     public TestFragment() {
 
     }
@@ -180,7 +183,7 @@ public class TestFragment extends Fragment {
 
 
     Timer timer;
-    int page = 1;
+    int page = 0;
 
     public void pageSwitcher(int seconds) {
         timer = new Timer(); // At this line a new Thread will be created
@@ -200,11 +203,10 @@ public class TestFragment extends Fragment {
             getActivity().runOnUiThread(new Runnable() {
                 public void run() {
 
-                    if (page > 4) { // In my case the number of pages are 5
-                        timer.cancel();
-                        // Showing a toast for just testing purpose
-                        Toast.makeText(getContext(), "Timer stoped",
-                                Toast.LENGTH_LONG).show();
+                    if (page > 2) { // In my case the number of pages are 5
+                        //timer.cancel();
+                        page = 0;
+                         mViewPager.setCurrentItem(page++);
                     } else {
                         mViewPager.setCurrentItem(page++);
                     }

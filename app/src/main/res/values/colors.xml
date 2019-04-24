@@ -76,7 +76,8 @@
     <color name="primary_dark">#388E3C</color>
 
     <color name="accent">#4CAF50</color>
-
+    <color name="blue">#303F9F</color>
+    <color name="green">#43A047</color>
 
 
     <!--////////////////////////////////-->

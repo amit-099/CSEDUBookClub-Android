@@ -137,7 +137,6 @@ public class BookFragment extends Fragment {
                             }
                         });
 
-
                     }
 
                     @Override
@@ -146,12 +145,6 @@ public class BookFragment extends Fragment {
                     }
                 });
 
-                //Get phone field and append to list
-
-
-                //System.out.println("qqqqqq   " + new_user.size());
-
-                //System.out.println("bookssssssss   " + books.toString());
             }
 
             @Override

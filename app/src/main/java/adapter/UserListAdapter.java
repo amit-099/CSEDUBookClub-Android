@@ -18,11 +18,11 @@ public class UserListAdapter extends BaseAdapter {
     public List<UserObj> userObjList;
     Context context;
 
-    public UserListAdapter(List<UserObj> mFoodList, Context
+    public UserListAdapter(List<UserObj> mchannelList, Context
 
             context) {
         this.context = context;
-        this.userObjList = mFoodList ;
+        this.userObjList = mchannelList;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class UserListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = null;
-        UserObj foodList = userObjList.get(position);
+        UserObj channelList = userObjList.get(position);
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater)
                     context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -55,18 +55,62 @@ public class UserListAdapter extends BaseAdapter {
             v = convertView;
         }
 
-        Typeface mTfRegular = Typeface.createFromAsset(v.getContext().getAssets(),"OpenSans-Regular.ttf");
+        Typeface mTfRegular = Typeface.createFromAsset(v.getContext().getAssets(), "OpenSans-Regular.ttf");
 
-        ImageView foodImageView = v.findViewById(R.id.spinnerImages);
-        TextView foodNameText = v.findViewById(R.id.spinnerTextView);
-        foodNameText.setTypeface(mTfRegular);
+        ImageView channelImageView = v.findViewById(R.id.spinnerImages);
+        TextView channelNameText = v.findViewById(R.id.spinnerTextView);
+        TextView oneLetterText = v.findViewById(R.id.name_char_text);
 
+        channelNameText.setTypeface(mTfRegular);
+        oneLetterText.setTypeface(mTfRegular);
 
-        foodImageView.setImageResource(R.drawable.man);
-        foodNameText.setText(foodList.getName());
+        System.out.println("---------------------1111111111-----------");
+        System.out.println(channelList.getName() + " " + channelList.getName().charAt(0));
+        channelNameText.setText(channelList.getName());
+        String one = String.valueOf(channelList.getName().charAt(0));
+        oneLetterText.setText(one);
 
-        foodImageView.setVisibility(View.VISIBLE);
-        foodNameText.setVisibility(View.VISIBLE);
+        channelImageView.setImageResource(R.drawable.circleshapepink);
+
+        java.util.Random rand = new java.util.Random();
+        int value = rand.nextInt(3);
+        android.graphics.drawable.Drawable background = channelImageView.getBackground();
+
+        if (value == 1) {
+
+            if (background instanceof android.graphics.drawable.ShapeDrawable) {
+                ((android.graphics.drawable.ShapeDrawable) background).getPaint().setColor(android.support.v4.content.ContextCompat.getColor(context, R.color.pink));
+            } else if (background instanceof android.graphics.drawable.GradientDrawable) {
+                ((android.graphics.drawable.GradientDrawable) background).setColor(android.support.v4.content.ContextCompat.getColor(context, R.color.pink));
+            } else if (background instanceof android.graphics.drawable.ColorDrawable) {
+                ((android.graphics.drawable.ColorDrawable) background).setColor(android.support.v4.content.ContextCompat.getColor(context, R.color.pink));
+            }
+
+        } else if (value == 2) {
+
+            if (background instanceof android.graphics.drawable.ShapeDrawable) {
+                ((android.graphics.drawable.ShapeDrawable) background).getPaint().setColor(android.support.v4.content.ContextCompat.getColor(context, R.color.blue));
+            } else if (background instanceof android.graphics.drawable.GradientDrawable) {
+                ((android.graphics.drawable.GradientDrawable) background).setColor(android.support.v4.content.ContextCompat.getColor(context, R.color.blue));
+            } else if (background instanceof android.graphics.drawable.ColorDrawable) {
+                ((android.graphics.drawable.ColorDrawable) background).setColor(android.support.v4.content.ContextCompat.getColor(context, R.color.blue));
+            }
+
+        } else {
+
+            if (background instanceof android.graphics.drawable.ShapeDrawable) {
+                ((android.graphics.drawable.ShapeDrawable) background).getPaint().setColor(android.support.v4.content.ContextCompat.getColor(context, R.color.green));
+            } else if (background instanceof android.graphics.drawable.GradientDrawable) {
+                ((android.graphics.drawable.GradientDrawable) background).setColor(android.support.v4.content.ContextCompat.getColor(context, R.color.green));
+            } else if (background instanceof android.graphics.drawable.ColorDrawable) {
+                ((android.graphics.drawable.ColorDrawable) background).setColor(android.support.v4.content.ContextCompat.getColor(context, R.color.green));
+            }
+
+        }
+
+        channelImageView.setVisibility(View.VISIBLE);
+        channelNameText.setVisibility(View.VISIBLE);
+        oneLetterText.setVisibility(View.VISIBLE);
 
 
         return v;
