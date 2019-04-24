@@ -136,6 +136,8 @@ public class BookFragment extends Fragment {
 
                             }
                         });
+
+
                     }
 
                     @Override

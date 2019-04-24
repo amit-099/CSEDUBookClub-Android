@@ -27,7 +27,7 @@ import java.util.Objects;
 import adapter.ReceivedBookListAdapter;
 
 public class RequestFragment extends Fragment {
-    private ArrayList<BookObj> books;
+    private ArrayList<BookObj> books, allowed_books, shown_books;
 
     //List Adapter Init
     private ListView bookListView;
@@ -45,6 +45,8 @@ public class RequestFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_requests, container, false);
 
         books = new ArrayList<>();
+        allowed_books = new ArrayList<>();
+        shown_books = new ArrayList<>();
 
         bookListView = view.findViewById(R.id.received_req_book_list_view);
 
@@ -53,7 +55,7 @@ public class RequestFragment extends Fragment {
 
         System.out.println("Entering analysissssssssssssssssssss");
 
-        String user_id = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+        final String user_id = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
 
         DatabaseReference receive_req_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
                 child("UID").child(user_id);
@@ -62,7 +64,7 @@ public class RequestFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                HashMap<String, Object> all_received_req = (HashMap<String, Object>) dataSnapshot.getValue();
+                final HashMap<String, Object> all_received_req = (HashMap<String, Object>) dataSnapshot.getValue();
                 assert all_received_req != null;
                 System.out.println("ALLLLLLLLLLLAAAAAAAAAAAAAALLLLLLLLLLLLLLLLLLAAAAAAAAAAAAAAAAAAAAALLLLLLLLLLLLL                ");
                 //System.out.println(all_received_req);
@@ -72,25 +74,65 @@ public class RequestFragment extends Fragment {
                     System.out.println("mmmmmmmmmmmmmmmmmmmmmmmmmm " + books);
 
 
-                    //List Adapter
-                    bookListAdapter = new ReceivedBookListAdapter(books, from, getContext());
 
-                    bookListView.setAdapter(bookListAdapter);
-                    //bookListView.setClickable(true);
+                    DatabaseReference allowed_req_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
+                            child("UID").child(user_id);
 
-                    bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    allowed_req_ref.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int itemNumber, long l) {
-                            Object obj = bookListView.getAdapter().getItem(itemNumber);
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            HashMap<String, Object> all_allowed_req = (HashMap<String, Object>) dataSnapshot.getValue();
+
+                            if(all_received_req.containsKey("allowed")) {
+                                collectAllowedData(all_allowed_req);
+                                collectShowData();
+
+                                //List Adapter
+                                bookListAdapter = new ReceivedBookListAdapter(shown_books, from, getContext());
+
+                                bookListView.setAdapter(bookListAdapter);
+                                //bookListView.setClickable(true);
+
+                                bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> adapterView, View view, int itemNumber, long l) {
+                                        Object obj = bookListView.getAdapter().getItem(itemNumber);
 //
+
+                                    }
+                                });
+                            } else {
+                                //List Adapter
+                                bookListAdapter = new ReceivedBookListAdapter(books, from, getContext());
+
+                                bookListView.setAdapter(bookListAdapter);
+                                //bookListView.setClickable(true);
+
+                                bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> adapterView, View view, int itemNumber, long l) {
+                                        Object obj = bookListView.getAdapter().getItem(itemNumber);
+//
+
+                                    }
+                                });
+                            }
+
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
                         }
                     });
+
                 }
                 else
                 {
                     System.out.println("no booooooooooooks fffffffffound");
                 }
+
 
 //
             }
@@ -158,11 +200,6 @@ public class RequestFragment extends Fragment {
                 }
             }
 
-
-
-
-
-
             System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
             System.out.println(singleBook1);
 
@@ -183,4 +220,65 @@ public class RequestFragment extends Fragment {
         System.out.println("bookssssssss   " + books.toString());
     }
 
+    private void collectAllowedData(HashMap<String, Object> allowed) {
+        HashMap<String, Object> allowed_book = (HashMap<String, Object>) allowed.get("allowed");
+
+        System.out.println("allowed           DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+        System.out.println(allowed_book);
+
+        //iterate through each user, ignoring their UID
+        for (HashMap.Entry<String, Object> entry : allowed_book.entrySet()){
+            BookObj aBook = new BookObj();
+
+            //Get user map
+            HashMap<String, Object> singleBook = (HashMap<String, Object>) entry.getValue();
+            System.out.println("allowed          oooooooooooooooooooooooooooooooooooooooooooo");
+            System.out.println(singleBook);
+
+
+
+
+            //Get phone field and append to list
+            aBook.setName((String) singleBook.get("name"));
+            aBook.setAvailability((String) singleBook.get("availability"));
+            aBook.setCategory((String) singleBook.get("category"));
+            aBook.setOwner((String) singleBook.get("owner"));
+            aBook.setWriter((String) singleBook.get("writer"));
+            aBook.setBook_id((String) singleBook.get("bookid"));
+
+            //phoneNumbers.add((Long) singleUser.get("phone"));
+            System.out.println("allowed            book      " + aBook.toString());
+            allowed_books.add(aBook);
+        }
+        //System.out.println("qqqqqq   " + new_user.size());
+
+        System.out.println("allowed          bookssssssss   " + allowed_books.toString());
+    }
+
+    private void collectShowData() {
+        System.out.println("CollectShownData-------------------------------");
+        System.out.println(books);
+        System.out.println("allowed----------------------------------------");
+        System.out.println(allowed_books);
+        for(int i = 0; i < books.size(); i++) {
+            Boolean flag = true;
+            for(int j = 0; j < allowed_books.size(); j++) {
+
+                if(books.get(i).getBook_id().equals(allowed_books.get(j).getBook_id())) {
+                    flag = false;
+                }
+            }
+            if(flag)
+            {
+                BookObj aShownBook = new BookObj();
+                aShownBook.setBook_id(books.get(i).getBook_id());
+                aShownBook.setAvailability(books.get(i).getAvailability());
+                aShownBook.setCategory(books.get(i).getCategory());
+                aShownBook.setName(books.get(i).getName());
+                aShownBook.setOwner(books.get(i).getOwner());
+                aShownBook.setWriter(books.get(i).getWriter());
+                shown_books.add(aShownBook);
+            }
+        }
+    }
 }
