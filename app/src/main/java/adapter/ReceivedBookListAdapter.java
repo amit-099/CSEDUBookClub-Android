@@ -193,46 +193,14 @@ public class ReceivedBookListAdapter extends BaseAdapter {
                 update_req_ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-
-
                         HashMap<String, Object> received_req = (HashMap<String, Object>) dataSnapshot.getValue();
 
                         for (HashMap.Entry<String, Object> entry : received_req.entrySet()){
                             HashMap<String, Object> singleBook = (HashMap<String, Object>) entry.getValue();
-
-//                            BookObj aBook;
-//                            System.out.println("----------------jjjjjjjjjjjj-------------");
-//                            System.out.println(book.getBook_id() );
-//                            boolean b = (singleBook.get(book.getBook_id()) instanceof BookObj);
-//                            System.out.println(b);
-//                            System.out.println(singleBook.get(book.getBook_id()));
-//                            if(singleBook.get(book.getBook_id()) instanceof BookObj){
-//                                aBook = (BookObj) singleBook.get(book.getBook_id());
-//                                System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
-//                                System.out.println(entry);
-//                                System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
-//                                System.out.println(aBook);
-//
-//                                if(aBook != null) {
-//                                    update_req_ref.child(entry.getKey()).setValue(null);
-//                                    //received_req.remove(entry);
-//                                }
-//                            }
-
-                            //System.out.println("oooooooooooooooooooooooooooooooooooooooooooo");
                             System.out.println(singleBook);
                             HashMap singleBook1 = new HashMap();
 
                             int i = 0;
-//            for (Object ent : singleBook.entrySet()){
-//                if(!ent.equals("from")) {
-//                    singleBook1 = (HashMap) entry.getValue();
-//                }
-//            }
-
-//                            System.out.println("SSSSSSSSSSSSSSSSSSiiiiiiiiiiiiiiiiiiiiinnnnnnnnnnnnnnggggggggggggggggggggggggggg");
-//                            System.out.println(singleBook);
                             for (HashMap.Entry<String, Object> entry2 : singleBook.entrySet()) {
                                 System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE     " + i++);
                                 System.out.println(entry2.getValue() + "        " + entry2.getKey());
@@ -252,10 +220,70 @@ public class ReceivedBookListAdapter extends BaseAdapter {
 
                             System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
                             System.out.println(singleBook1);
-
-
-
                         }
+
+
+                        final DatabaseReference update_username_ref = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
+                                child("UID").child(user_id).child("username");
+
+                        update_username_ref.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                String user_name = (String) dataSnapshot.getValue();
+
+                                assert user_name != null;
+                                final DatabaseReference update_req_ref_username = FirebaseDatabase.getInstance().getReference().child("Users").child("Owners").
+                                        child("username").child(user_name).child("receiverequest");
+
+                                update_req_ref_username.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        HashMap<String, Object> received_req_username = (HashMap<String, Object>) dataSnapshot.getValue();
+
+
+
+                                        for (HashMap.Entry<String, Object> entry_user : received_req_username.entrySet()){
+                                            HashMap<String, Object> singleBook_user = (HashMap<String, Object>) entry_user.getValue();
+                                            System.out.println(singleBook_user);
+                                            HashMap singleBook_user1 = new HashMap();
+
+                                            int i = 0;
+                                            for (HashMap.Entry<String, Object> entry_user2 : singleBook_user.entrySet()) {
+                                                System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE     " + i++);
+                                                System.out.println(entry_user2.getValue() + "        " + entry_user2.getKey());
+                                                System.out.println(book.getBook_id());
+                                                if (!entry_user2.getKey().equals("from")) {
+                                                    singleBook_user1 = (HashMap) entry_user2.getValue();
+                                                    if(singleBook_user1.get("bookid").equals(book.getBook_id())) {
+                                                        update_req_ref_username.child(entry_user.getKey()).setValue(null);
+                                                        System.out.println("dddddddddddd        " + entry_user2.getKey() + " " + entry_user.getKey());
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    from = (String) entry_user2.getValue();
+                                                }
+                                            }
+
+                                            System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
+                                            System.out.println(singleBook_user1);
+                                        }
+
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
                     }
 
                     @Override

@@ -21,6 +21,10 @@
             "package_name": "com.example.searchify",
             "certificate_hash": "09e84855f6c37b52581b9028f123c24c5ed22010"
           }
+        },
+        {
+          "client_id": "934668298736-uvp1mmnkgaqifb5ifjhifo8lp5ovvc3c.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [

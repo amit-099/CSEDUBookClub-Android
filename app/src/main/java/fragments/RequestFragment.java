@@ -84,6 +84,7 @@ public class RequestFragment extends Fragment {
                             HashMap<String, Object> all_allowed_req = (HashMap<String, Object>) dataSnapshot.getValue();
 
                             if(all_received_req.containsKey("allowed")) {
+                                assert all_allowed_req != null;
                                 collectAllowedData(all_allowed_req);
                                 collectShowData();
 
@@ -97,8 +98,6 @@ public class RequestFragment extends Fragment {
                                     @Override
                                     public void onItemClick(AdapterView<?> adapterView, View view, int itemNumber, long l) {
                                         Object obj = bookListView.getAdapter().getItem(itemNumber);
-//
-
                                     }
                                 });
                             } else {
@@ -235,9 +234,6 @@ public class RequestFragment extends Fragment {
             System.out.println("allowed          oooooooooooooooooooooooooooooooooooooooooooo");
             System.out.println(singleBook);
 
-
-
-
             //Get phone field and append to list
             aBook.setName((String) singleBook.get("name"));
             aBook.setAvailability((String) singleBook.get("availability"));
@@ -261,7 +257,7 @@ public class RequestFragment extends Fragment {
         System.out.println("allowed----------------------------------------");
         System.out.println(allowed_books);
         for(int i = 0; i < books.size(); i++) {
-            Boolean flag = true;
+            boolean flag = true;
             for(int j = 0; j < allowed_books.size(); j++) {
 
                 if(books.get(i).getBook_id().equals(allowed_books.get(j).getBook_id())) {
