@@ -19,6 +19,8 @@ import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Objects;
+
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -30,6 +32,7 @@ public class HomeActivity extends AppCompatActivity {
     //public static Activity homeTabActivity;
 
     SharedPreferences preferences;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,10 @@ public class HomeActivity extends AppCompatActivity {
         mFragmentTransaction = mFragmentManager.beginTransaction();
         mFragmentTransaction.replace(R.id.frame_container, new TabFragment()).commit();
 
+        mAuth = FirebaseAuth.getInstance();
+        final String user_id = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+
+
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -73,6 +80,11 @@ public class HomeActivity extends AppCompatActivity {
                     case R.id.item_edit:
                         Intent intent2 = new Intent(HomeActivity.this, EditProfileActivity.class);
                         startActivity(intent2);
+                        break;
+                    case R.id.item_profile:
+                        Intent intent3 = new Intent(HomeActivity.this, MyProfileActivity.class);
+
+                        startActivity(intent3);
                         break;
 
 //                    case R.id.friends:
