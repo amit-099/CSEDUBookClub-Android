@@ -91,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()) {
-                            progressDialog.dismiss();
+//                            progressDialog.dismiss();
                             mPassword.setError("email or password did not match");
                         } else {
                             mPassword.setError(null);

@@ -1,5 +1,6 @@
 package fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.widget.GridView;
 
 import com.example.searchify.BookObj;
 import com.example.searchify.R;
+import com.example.searchify.ShowProfileActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -95,6 +97,17 @@ public class TestFragment extends Fragment {
                                     aBook.setOwner((String) singleBook.get("owner"));
                                     aBook.setWriter((String) singleBook.get("writer"));
 
+
+                                    if(singleBook.containsKey("imageuri"))
+                                    {
+                                        aBook.setImageuri((String) singleBook.get("imageuri"));
+                                    }
+                                    else {
+                                        aBook.setImageuri("noimageuri");
+
+                                    }
+
+
                                     //phoneNumbers.add((Long) singleUser.get("phone"));
                                     //System.out.println("book      " + aBook.toString());
                                     books.add(aBook);
@@ -115,6 +128,15 @@ public class TestFragment extends Fragment {
                                 aBook.setOwner((String) singleBook.get("owner"));
                                 aBook.setWriter((String) singleBook.get("writer"));
 
+                                if(singleBook.containsKey("imageuri"))
+                                {
+                                    aBook.setImageuri((String) singleBook.get("imageuri"));
+                                }
+                                else {
+                                    aBook.setImageuri("noimageuri");
+
+                                }
+
                                 //phoneNumbers.add((Long) singleUser.get("phone"));
                                 //System.out.println("book      " + aBook.toString());
                                 books.add(aBook);
@@ -123,6 +145,7 @@ public class TestFragment extends Fragment {
                         }
                         bookListView.setNumColumns(books.size());
                         //Grid Adapter
+
                         gridElementAdapter = new GridElementAdapter(books, getContext());
 
                         bookListView.setAdapter(gridElementAdapter);
@@ -132,6 +155,13 @@ public class TestFragment extends Fragment {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int itemNumber, long l) {
                                 Object obj = bookListView.getAdapter().getItem(itemNumber);
+
+
+                                Intent intent = new Intent(getContext(), ShowProfileActivity.class);
+                                intent.putExtra("username", books.get(itemNumber).getOwner());
+                                intent.putExtra("fullname", books.get(itemNumber).getOwner());
+                                startActivity(intent);
+
 
                             }
                         });
@@ -192,18 +222,25 @@ public class TestFragment extends Fragment {
 
             // As the TimerTask run on a seprate thread from UI thread we have
             // to call runOnUiThread to do work on UI thread.
-            getActivity().runOnUiThread(new Runnable() {
-                public void run() {
+            if(getActivity()!=null)
+            {
+                getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
 
-                    if (page > 2) { // In my case the number of pages are 5
-                        //timer.cancel();
-                        page = 0;
-                         mViewPager.setCurrentItem(page++);
-                    } else {
-                        mViewPager.setCurrentItem(page++);
+                        if (page > 2) { // In my case the number of pages are 5
+                            //timer.cancel();
+                            page = 0;
+                            mViewPager.setCurrentItem(page++);
+                        } else {
+                            mViewPager.setCurrentItem(page++);
+                        }
                     }
-                }
-            });
+                });
+            }
+            else {
+                timer.cancel();
+            }
+
 
         }
     }

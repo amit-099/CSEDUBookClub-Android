@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.searchify.BookObj;
 import com.example.searchify.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,8 +75,20 @@ public class GridElementAdapter extends BaseAdapter {
         TextView bookNameText = v.findViewById(R.id.grid_text);
 
 
-        bookImageView.setImageResource(R.drawable.library);
+        //Book Image
+        String image = book.getImageuri();
+        if(!image.equals("noimageuri"))
+        {
+            Picasso.with(bookImageView.getContext()).load(image).into(bookImageView);
+        }
+        else {
+            bookImageView.setImageResource(R.drawable.library);
+        }
         bookImageView.setVisibility(View.VISIBLE);
+
+
+//        bookImageView.setImageResource(R.drawable.library);
+//        bookImageView.setVisibility(View.VISIBLE);
 
         //Book name
         bookNameText.setTypeface(mTfRegular);

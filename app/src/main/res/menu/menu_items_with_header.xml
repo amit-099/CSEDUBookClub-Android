@@ -11,43 +11,43 @@
                 android:checkable="true"
                 android:icon="@drawable/ic_person"
                 android:title="My Profile"/>
-            <item
-                android:id="@+id/item_edit"
-                android:checkable="true"
-                android:icon="@drawable/ic_mode_edit"
-                android:title="Edit Profile"/>
+            <!--<item-->
+                <!--android:id="@+id/item_edit"-->
+                <!--android:checkable="true"-->
+                <!--android:icon="@drawable/ic_mode_edit"-->
+                <!--android:title="Edit Profile"/>-->
 
         </menu>
     </item>
 
-    <item
-        android:id="@+id/navigation_item_2"
-        android:title="Analysis">
-        <menu>
-            <item
-                android:id="@+id/charts"
-                android:checkable="true"
-                android:icon="@drawable/chart_nav"
-                android:title="Charts"/>
+    <!--<item-->
+        <!--android:id="@+id/navigation_item_2"-->
+        <!--android:title="Analysis">-->
+        <!--<menu>-->
+            <!--<item-->
+                <!--android:id="@+id/charts"-->
+                <!--android:checkable="true"-->
+                <!--android:icon="@drawable/chart_nav"-->
+                <!--android:title="Charts"/>-->
 
 
-        </menu>
-    </item>
+        <!--</menu>-->
+    <!--</item>-->
 
-    <item
-        android:id="@+id/navigation_item3"
-        android:title="Social">
+    <!--<item-->
+        <!--android:id="@+id/navigation_item3"-->
+        <!--android:title="Social">-->
 
-        <menu>
-            <item
-                android:id="@+id/friends"
-                android:checkable="true"
-                android:icon="@drawable/add_contact"
-                android:title="Friends"/>
+        <!--<menu>-->
+            <!--<item-->
+                <!--android:id="@+id/friends"-->
+                <!--android:checkable="true"-->
+                <!--android:icon="@drawable/add_contact"-->
+                <!--android:title="Friends"/>-->
 
 
-        </menu>
-    </item>
+        <!--</menu>-->
+    <!--</item>-->
 
     <item
         android:id="@+id/navigation_item4"

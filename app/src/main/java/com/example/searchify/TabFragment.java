@@ -54,13 +54,13 @@ public class TabFragment extends Fragment {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new HomeFragment();//////////////////////////////////////////////////////////////////////
+                    return new TestFragment();//////////////////////////////////////////////////////////////////////
                 case 1:
-                    return new BookFragment();
+                    return new HomeFragment();
                 case 2:
-                    return new RequestFragment();
+                    return new BookFragment();
                 case 3:
-                   return new TestFragment();
+                   return new RequestFragment();
 
             }
             return null;
@@ -77,13 +77,13 @@ public class TabFragment extends Fragment {
 
             switch (position) {
                 case 0:
-                    return getResources().getString(R.string.tab1);
+                    return "Home";
                 case 1:
-                    return getResources().getString(R.string.tab2);
+                    return "Channels";
                 case 2:
-                    return getResources().getString(R.string.tab3);
+                    return "Books";
                 case 3:
-                    return "Test";
+                    return "Requests";
 
             }
             return null;

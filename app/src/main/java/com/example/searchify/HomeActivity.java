@@ -77,10 +77,10 @@ public class HomeActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                         break;
-                    case R.id.item_edit:
-                        Intent intent2 = new Intent(HomeActivity.this, EditProfileActivity.class);
-                        startActivity(intent2);
-                        break;
+//                    case R.id.item_edit:
+//                        Intent intent2 = new Intent(HomeActivity.this, EditProfileActivity.class);
+//                        startActivity(intent2);
+//                        break;
                     case R.id.item_profile:
                         Intent intent3 = new Intent(HomeActivity.this, MyProfileActivity.class);
 
